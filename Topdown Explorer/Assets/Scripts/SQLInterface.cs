@@ -12,6 +12,9 @@ using System.IO;
 /// :::::::::::::::::::::::::Matt TODO::::::::::::::::::::::
 /// GenerateNewTiles()
 /// DropPickupRewards()
+/// FillwithProps()
+/// SummonEnemies()
+/// AquirePowerup()
 /// </summary>
 public class SQLInterface : MonoBehaviour {
 
@@ -141,7 +144,8 @@ public class SQLInterface : MonoBehaviour {
         "hp_characterID INTEGER NOT NULL " +
         "REFERENCES player_character(pc_ID), " +
         "hp_pickupID INTEGER NOT NULL " +
-        "REFERENCES pickup(p_typeID) " +
+        "REFERENCES pickup(p_typeID) ," +
+        "hp_count INTEGER NOT NULL "+
         ");"+
         "CREATE TABLE map_tiles( " +
         "t_id INTEGER NOT NULL " +
@@ -304,6 +308,17 @@ public class SQLInterface : MonoBehaviour {
     /// <param name="currenttile">the index of the tile to generate on.</param>
     /// <returns> the indexes of all newly instanced contains_props. </returns>
     public List<int> FillwithProps(int currenttile)
+    {
+        throw new NotImplementedException();
+    }
+    /// <summary>
+    /// adds a pickup to has_powerups. If an entry already exists, increment hp_count.
+    /// if an entry does not yet exist, create a new entry. 
+    /// </summary>
+    /// <param name="pickup">index of pickup to add</param>
+    /// <param name="playercharacter">index of character to add pickup to</param>
+    /// <returns>the number of entries modified or created</returns>
+    public int AquirePowerup(int pickup, int playercharacter)
     {
         throw new NotImplementedException();
     }
