@@ -189,7 +189,13 @@ public class SQLInterface : MonoBehaviour {
         "sf_name CHAR(25) NOT NULL, " +
         "sf_seed DECIMAL(10) NOT NULL, " +
         "sf_date_created DATETIME NOT NULL " +
-        ");" ;
+        ");"+
+        "CREATE TABLE highscore ( "+
+        "hs_id INTEGER NOT NULL "+
+        "PRIMARY KEY,"+
+        "hs_name CHAR(25) NOT NULL, "+
+        "hs_exp  DECIMAL(10) NOT NULL "+
+        ");";
         dbcmd.ExecuteNonQuery();
         Debug.Log("Empty database constructed.");
         dbcmd.Dispose();
@@ -228,7 +234,7 @@ public class SQLInterface : MonoBehaviour {
             "insert into pickup values(5,'Arrow',5,1); " +
             "insert into pickup values(6,'Shield',50,1); " +
             "insert into pickup values(7,'Bow',50,1); " +
-            "insert into pickup values(8,'ExpArrow',5,1); ";
+            "insert into pickup values(8,'ExplodeArrow',5,1); ";
         dbcmd.ExecuteNonQuery();
         dbcmd.Dispose();
         Debug.Log("Populated static tables.");
