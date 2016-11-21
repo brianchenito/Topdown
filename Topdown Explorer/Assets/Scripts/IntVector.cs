@@ -6,6 +6,11 @@ using System.Collections;
 public struct IntVector {
     public int x { get; set; }
     public int y { get; set; }
+    public float magnitude
+    {
+        get { return Mathf.Sqrt(x * x + y * y); }
+    }
+
     /// <summary>
     /// constructor
     /// </summary>
@@ -15,6 +20,35 @@ public struct IntVector {
     {
         this.x = x;
         this.y = y;
+    }
+    public static IntVector operator -(IntVector one, IntVector two)
+    {
+        return new IntVector(one.x - two.x, one.y - two.y);
+    }
+    public static IntVector operator +(IntVector one, IntVector two)
+    {
+        return new IntVector(one.x + two.x, one.y + two.y);
+    }
+    public static IntVector operator *(int one, IntVector two)
+    {
+        return new IntVector(one * two.x, one * two.y);
+    }
+    public static IntVector operator *(IntVector one, int two)
+    {
+        return new IntVector(one.x * two, one.y * two);
+
+    }
+    public static IntVector operator /(IntVector one, int two)
+    {
+        return new IntVector(one.x / two, one.y / two);
+    }
+    public static bool operator !=(IntVector one, IntVector two)
+    {
+        return (one.x != two.x || one.y != two.y);
+    }
+    public static bool operator ==(IntVector one, IntVector two)
+    {
+        return (one.x == two.x && one.y == two.y);
     }
     /// <summary>
     /// returns the strictly cartesian distance to a target IntVector. 
