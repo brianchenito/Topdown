@@ -15,11 +15,13 @@ using System.IO;
 /// FillwithProps()
 /// SummonEnemies()
 /// AquirePowerup()
+/// GetSaves()
+/// CreateNewSave();
 /// </summary>
 public class SQLInterface : MonoBehaviour {
 
     IDbConnection dbconn;
-
+    public int currentActiveSavefile;
     /// <summary>
     /// Built in Unity function used for initialization.
     /// this function is called a single time, upon activation.
@@ -27,6 +29,7 @@ public class SQLInterface : MonoBehaviour {
     /// that you should be doing constructor-y stuff here.
     /// </summary>
     void Start () {
+        currentActiveSavefile = 0;// 0 is a nonexistent save
         //instantiate a new database if one does not exist.
         String filePath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments)+ "\\TopdownGame\\topdown.db";
         if (File.Exists(filePath))
@@ -238,7 +241,7 @@ public class SQLInterface : MonoBehaviour {
             "insert into pickup values(5,'Arrow',5,1); " +
             "insert into pickup values(6,'Shield',50,1); " +
             "insert into pickup values(7,'Bow',50,1); " +
-            "insert into pickup values(8,'ExplodeArrow',5,1); ";
+            "insert into pickup values(8,'FlameSword',50,1); ";
         dbcmd.ExecuteNonQuery();
         dbcmd.Dispose();
         Debug.Log("Populated static tables.");
@@ -263,6 +266,33 @@ public class SQLInterface : MonoBehaviour {
 
     }
 
+    ////////////////////////////////////////////////////////
+    //Functions that need doing
+    ////////////////////////////////////////////////////////
+
+    /// <summary>
+    /// gets as string representation the save entries of the database. 
+    /// output int is index of save.
+    /// output string is name of save.
+    /// </summary>
+    /// <returns> a list of KV pairs(int, string)</returns>
+    public List<KeyValuePair<int,String>> GetSaves()
+    {
+        return null;
+    }
+    /// <summary>
+    /// generate a new entry for save_files.
+    /// leave sf_id null, sql will autogenerate.
+    /// random generate a seed somehow, use MathF or something.
+    /// This must also generate new entries for Player_Character, 
+    /// contains_character,map_tiles(at coord 0,0), and contains_tile.
+    /// </summary>
+    /// <param name="name">The name of the save file</param>
+    public void CreateNewSave(String name)
+    {
+        return;
+    }
+
     /// <summary>
     /// Identifies maptiles that should be adjacent to the maptile specified by nextcoord,
     /// but do not yet exist in the database. adds new entries to map_tiles and contains_tiles
@@ -273,11 +303,11 @@ public class SQLInterface : MonoBehaviour {
     /// <returns> the indexes of all newly instanced tiles.</returns>
     public List<int> GenerateNewTiles(int prevtile, int nexttile)
     {
-        throw new NotImplementedException();
+        return null;
     }
     /// <summary>
     /// Generate up to the max number of contains_pickups possible for a specified tile. 
-    /// for pickups 6 and 7 (shield and bow), if the character's has_powerups already
+    /// for pickups 6, 7, and 8 (shield, flamingsword, and bow), if the character's has_powerups already
     /// contains these items, do not generate entries with those pickup ids.
     /// local x and local y must be in the range (-40,40). 
     /// 
@@ -286,7 +316,7 @@ public class SQLInterface : MonoBehaviour {
     /// <returns> the indexes of all newly instanced contains_pickups. </returns>
     public List<int> DropPickupRewards(int currenttile, int playerCharacter)
     {
-        throw new NotImplementedException();
+        return null;
     }
     /// <summary>
     /// generate up to the max number of contains_enemies possible for a specified tile.
@@ -296,7 +326,7 @@ public class SQLInterface : MonoBehaviour {
     /// <param name="currenttile"></param>
     public void SummonEnemies(int currenttile)
     {
-        throw new NotImplementedException();
+        return;
     }
     /// <summary>
     /// generate up to the max number of contains_props possile for a specified tile.
@@ -309,7 +339,7 @@ public class SQLInterface : MonoBehaviour {
     /// <returns> the indexes of all newly instanced contains_props. </returns>
     public List<int> FillwithProps(int currenttile)
     {
-        throw new NotImplementedException();
+        return null;
     }
     /// <summary>
     /// adds a pickup to has_powerups. If an entry already exists, increment hp_count.
@@ -317,10 +347,9 @@ public class SQLInterface : MonoBehaviour {
     /// </summary>
     /// <param name="pickup">index of pickup to add</param>
     /// <param name="playercharacter">index of character to add pickup to</param>
-    /// <returns>the number of entries modified or created</returns>
-    public int AquirePowerup(int pickup, int playercharacter)
+    public void AquirePowerup(int pickup, int playercharacter)
     {
-        throw new NotImplementedException();
+        return;
     }
 
 
