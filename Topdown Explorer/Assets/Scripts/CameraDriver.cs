@@ -10,7 +10,6 @@ public class CameraDriver : MonoBehaviour {
     private static Vector3 offset = new Vector3(0,50,-8);// camera offset from target
 
     void Start () {
-        Cursor.lockState = CursorLockMode.Confined;
         groundPlane = new Plane(Vector3.up, Vector3.zero);
         player = GameObject.Find("PlayerCharacter");
         if (player == null) throw new System.Exception("unable to find PlayerCharacter");
