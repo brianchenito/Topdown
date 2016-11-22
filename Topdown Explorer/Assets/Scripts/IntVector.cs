@@ -21,6 +21,24 @@ public struct IntVector {
         this.x = x;
         this.y = y;
     }
+    public override bool Equals(object obj)
+    {
+        if (!(obj is IntVector))return false;
+        IntVector castobj = (IntVector)obj;
+
+        return (x == castobj.x && y == castobj.y);
+    }
+    public override int GetHashCode()
+    {
+        unchecked 
+        {
+            int hash = 17;
+            hash = hash * 23 + x.GetHashCode();
+            hash = hash * 23 + y.GetHashCode();
+            return hash;
+        }
+    }
+
     public static IntVector operator -(IntVector one, IntVector two)
     {
         return new IntVector(one.x - two.x, one.y - two.y);
