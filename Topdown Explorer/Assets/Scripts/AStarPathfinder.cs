@@ -4,8 +4,8 @@ using System.Collections.Generic;
 public class pathNode
 {
     public static List<Vector3> adjacents = new List<Vector3>()
-    { new Vector3(5,0,0),new Vector3(-5,0,0),new Vector3(0,0,5),new Vector3(0,0,-5),
-        new Vector3(5,0,5),new Vector3(5,0,-5),new Vector3(-5,0,5),new Vector3(-5,0,-5),
+    { new Vector3(2.5f,0,0),new Vector3(-2.5f,0,0),new Vector3(0,0,2.5f),new Vector3(0,0,-2.5f),
+        new Vector3(2.5f,0,2.5f),new Vector3(2.5f,0,-2.5f),new Vector3(-2.5f,0,2.5f),new Vector3(-2.5f,0,-2.5f),
     };
     public Vector3 position { get; set; }
     public pathNode previous;
@@ -42,7 +42,7 @@ public class pathNode
 
 
 public class AStarPathfinder {
-    static int depthlimit = 100;
+    static int depthlimit = 300;
     static int layerMask = 1 << 9;
     /// <summary>
     /// generate a lowish granularity(5 units per node) path from startpos to endpos.
@@ -106,12 +106,12 @@ public class AStarPathfinder {
         }
         return null;
     }
-    //checks if a 4 u wide entity can path through without collisions
+    //checks if a 5 u wide entity can path through without collisions
     private static bool isClear(Vector3 startposition, Vector3 direction)
     {
         return !(Physics.Raycast(startposition + Vector3.up, direction, 7.2f,layerMask)||
-                Physics.Raycast(startposition+ 2f*Vector3.Normalize(Vector3.Cross(startposition,Vector3.up)) + Vector3.up, direction, 7.2f , layerMask) ||
-                Physics.Raycast(startposition + -2f* Vector3.Normalize(Vector3.Cross(startposition, Vector3.up)) + Vector3.up, direction, 7.2f, layerMask)
+                Physics.Raycast(startposition+ 2.5f*Vector3.Normalize(Vector3.Cross(startposition,Vector3.up)) + Vector3.up, direction, 7.2f , layerMask) ||
+                Physics.Raycast(startposition + -2.5f* Vector3.Normalize(Vector3.Cross(startposition, Vector3.up)) + Vector3.up, direction, 7.2f, layerMask)
             );
     }
 

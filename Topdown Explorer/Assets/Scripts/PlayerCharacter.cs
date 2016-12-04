@@ -39,7 +39,7 @@ public class PlayerCharacter : MonoBehaviour {
         {
             Vector3 cursorpos = ray.GetPoint(rayDistance);
             //Debug.Log(cursorpos);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(cursorpos - transform.position), turnspeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(cursorpos - transform.position,Vector3.up), turnspeed * Time.deltaTime);
 
         }
     }
