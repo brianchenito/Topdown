@@ -42,7 +42,8 @@ public class pathNode
 
 
 public class AStarPathfinder {
-    static int depthlimit = 70;
+    static int depthlimit = 100;
+    static int layerMask = 1 << 9;
     /// <summary>
     /// generate a lowish granularity(5 units per node) path from startpos to endpos.
     /// vectors in list represent absolute node positions.
@@ -95,7 +96,7 @@ public class AStarPathfinder {
                     }  
                 }
                 // add to fringe if theres nothing there, and position is not already in fringe
-                if (!alreadyinfringe&&!Physics.Raycast(current.position+Vector3.up,i,7.1f))
+                if (!alreadyinfringe&&isClear(current.position,i))
                 {
                     pathNode newnode = new pathNode(current.position + i, current, guessfscore, current.partialcost + i.magnitude);
                     //identify appropriate 
@@ -104,6 +105,14 @@ public class AStarPathfinder {
             }
         }
         return null;
+    }
+    //checks if a 4 u wide entity can path through without collisions
+    private static bool isClear(Vector3 startposition, Vector3 direction)
+    {
+        return !(Physics.Raycast(startposition + Vector3.up, direction, 7.2f,layerMask)||
+                Physics.Raycast(startposition+ 2f*Vector3.Normalize(Vector3.Cross(startposition,Vector3.up)) + Vector3.up, direction, 7.2f , layerMask) ||
+                Physics.Raycast(startposition + -2f* Vector3.Normalize(Vector3.Cross(startposition, Vector3.up)) + Vector3.up, direction, 7.2f, layerMask)
+            );
     }
 
     private static float guesstimate(Vector3 start, Vector3 end)
