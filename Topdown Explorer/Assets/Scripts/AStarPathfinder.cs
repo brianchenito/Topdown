@@ -42,7 +42,7 @@ public class pathNode
 
 
 public class AStarPathfinder {
-    static int depthlimit = 300;
+    static int depthlimit = 500;
     static int layerMask = 1 << 9;
     /// <summary>
     /// generate a lowish granularity(5 units per node) path from startpos to endpos.

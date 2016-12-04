@@ -37,10 +37,11 @@ public class PlayerCharacter : MonoBehaviour {
         float rayDistance;  //records distance to groundplane from ray emitter
         if (groundPlane.Raycast(ray, out rayDistance))//do floor check
         {
-            Vector3 cursorpos = ray.GetPoint(rayDistance);
+            Vector3 cursorpos = ray.GetPoint(rayDistance)+Vector3.up*transform.position.y;
             //Debug.Log(cursorpos);
+            Debug.Log(transform.rotation);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(cursorpos - transform.position,Vector3.up), turnspeed * Time.deltaTime);
-
+            
         }
     }
     void FixedUpdate()
