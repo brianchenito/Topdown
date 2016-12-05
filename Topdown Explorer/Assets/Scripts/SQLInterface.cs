@@ -5,21 +5,15 @@ using Mono.Data.Sqlite;
 using System.Data;
 using System;
 using System.IO;
-
+[RequireComponent(typeof(GameManager))]
 /// <summary>
 /// the primary interface for sql read/writes. most of our database relevant code goes here.
 /// 
 /// :::::::::::::::::::::::::Matt TODO::::::::::::::::::::::
-/// GenerateNewTiles()
-/// DropPickupRewards()
-/// FillwithProps()
-/// SummonEnemies()
-/// AquirePowerup()
-/// GetSaves()
-/// CreateNewSave();
+/// like everything marked down below past line 250
 /// </summary>
 public class SQLInterface : MonoBehaviour {
-
+    public PlayerCharacter ActivePlayer;
     IDbConnection dbconn;
     public int currentActiveSavefile;
     /// <summary>
@@ -267,11 +261,11 @@ public class SQLInterface : MonoBehaviour {
     }
 
     ////////////////////////////////////////////////////////
-    //Functions that need doing
+    //Functions that need doing by matt
     ////////////////////////////////////////////////////////
 
     /// <summary>
-    /// gets as string representation the save entries of the database. 
+    /// gets saves as string representations the save entries of the database. 
     /// output int is index of save.
     /// output string is name of save.
     /// </summary>
@@ -280,6 +274,7 @@ public class SQLInterface : MonoBehaviour {
     {
         return null;
     }
+
     /// <summary>
     /// generate a new entry for save_files.
     /// leave sf_id null, sql will autogenerate.
@@ -344,13 +339,56 @@ public class SQLInterface : MonoBehaviour {
     /// <summary>
     /// adds a pickup to has_powerups. If an entry already exists, increment hp_count.
     /// if an entry does not yet exist, create a new entry. 
+    /// remove the contains_pickups from the database.
+    /// 
+    /// if the pickup is a healthkit, call HealPlayer().
+    /// if the pickup is a chest, call ActivateChest().
+    /// if the pickup is an arrow, instead increment hp_count by 10( arrow pickups grant 10 arrows), and call ActivateArrows()
+    /// if the pickup is a bow, call ActivateBow().
+    /// if the pickup is a shield, call ActivateShield().
+    /// if the pickup is a flamesword, call ActivateFlameSword().
+    /// 
     /// </summary>
-    /// <param name="pickup">index of pickup to add</param>
+    /// <param name="contains_pickup">index of instantiated pickup to add</param>
     /// <param name="playercharacter">index of character to add pickup to</param>
-    public void AquirePowerup(int pickup, int playercharacter)
+    public void AquirePowerup(int contains_pickup, int playercharacter)
     {
         return;
     }
+    /// <summary>
+    /// restore health to player character, up to 9 hp.
+    /// if bigheals, restore 4 hp. otherwise,restore 2.
+    /// </summary>
+    /// <param name="player"> index of player character to modify health.</param>
+    /// <param name="bigheals">whether the health kit is a big or small</param>
+    public void healPlayer(int player, bool bigheals)
+    {
+        //SQL STUFF HERE.
+        ActivePlayer.UpdateHealth();
+        return;
+    }
+
+    /// <summary>
+    /// remove this chest from the database, and generate three new random contains_pickup entries, 
+    /// where the local locations are +- 10 units away from the original chest. again, dont instance
+    /// flameswords, shields, or bows if the player's has_powerups already has one.
+    /// </summary>
+    /// <param name="chest"></param>
+    public void ActivateChest(int player, int chest)
+    {
+    }
+
+    ////////////////////////////////////////////////////////
+    //End of Matt's stuff
+    ////////////////////////////////////////////////////////
 
 
+
+    public void ActivateArrows(int player)
+    {
+        ActivePlayer.UpdateArrows();
+    }
+    public void ActivateBow() { }
+    public void ActivateShield() { }
+    public void ActivateFlameSword() { }
 }

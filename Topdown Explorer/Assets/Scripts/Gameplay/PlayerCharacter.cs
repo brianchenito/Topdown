@@ -47,4 +47,6 @@ public class PlayerCharacter : MonoBehaviour {
     void FixedUpdate()
     {       
     }
+    public void UpdateHealth() { }
+    public void UpdateArrows() { }
 }
