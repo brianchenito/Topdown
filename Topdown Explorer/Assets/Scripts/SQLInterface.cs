@@ -276,6 +276,16 @@ public class SQLInterface : MonoBehaviour {
     }
 
     /// <summary>
+    /// pull the data of the character associated with a save file. 
+    /// 
+    /// </summary>
+    /// <param name="saveIndex"></param>
+    /// <returns></returns>
+    public CharacterStats getAssociatedCharacterStats(int saveIndex)
+    {
+        return null;
+    }
+    /// <summary>
     /// generate a new entry for save_files.
     /// leave sf_id null, sql will autogenerate.
     /// random generate a seed somehow, use MathF or something.
@@ -374,8 +384,10 @@ public class SQLInterface : MonoBehaviour {
     /// flameswords, shields, or bows if the player's has_powerups already has one.
     /// </summary>
     /// <param name="chest"></param>
-    public void ActivateChest(int player, int chest)
+    /// <returns> the indexes of the newly created entries</returns>
+    public List<int> ActivateChest(int player, int chest)
     {
+        return null;
     }
 
     ////////////////////////////////////////////////////////

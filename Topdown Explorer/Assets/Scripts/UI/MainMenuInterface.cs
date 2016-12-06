@@ -32,4 +32,8 @@ public class MainMenuInterface : MonoBehaviour {
     {
         quitMenu.SetActive(true);
     }
+    public void LaunchGame(int saveFile)
+    {
+
+    }
 }
