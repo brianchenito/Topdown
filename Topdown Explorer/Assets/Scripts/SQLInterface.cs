@@ -276,12 +276,32 @@ public class SQLInterface : MonoBehaviour {
     /// pull the data of the character associated with a save file. 
     /// 
     /// </summary>
-    /// <param name="saveIndex"></param>
+    /// <param name="saveIndex"> the index of the save</param>
     /// <returns></returns>
     public CharacterStats getAssociatedCharacterStats(int saveIndex)
     {
         return null;
     }
+    /// <summary>
+    /// get all tiles associated with a save file.
+    /// int is tile index, Intvector is its global coord
+    /// </summary>
+    /// <param name="saveIndex"> the index of the save</param>
+    /// <returns></returns>
+    public List<KeyValuePair<int, IntVector>> getAssociatedTiles(int saveIndex)
+    {
+        return null;
+    }
+    /// <summary>
+    /// pull the data of the has_enmemy associated with a level tile
+    /// </summary>
+    /// <param name="tileIndex"></param>
+    /// <returns></returns>
+    public List<EnemyStats> getAssociatedEnemies(int tileIndex)
+    {
+        return null;
+    }
+
     /// <summary>
     /// generate a new entry for save_files.
     /// leave sf_id null, sql will autogenerate.
