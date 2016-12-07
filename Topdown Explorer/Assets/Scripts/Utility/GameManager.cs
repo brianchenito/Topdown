@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        DontDestroyOnLoad(transform.gameObject);
+
         EnemyClasses =new Dictionary<int, GameObject>()
         {
             {1,Resources.Load("Prefabs/SlimeBig") as GameObject },

@@ -5,6 +5,18 @@ public class QuoteGenerator  {
     static List<string> firstNames= new List<string>()
     {
         "Butts",
+        "Bill",
+        "Lancel",
+        "Bernard",
+        "Dolores",
+        "Emily",
+        "Rodrigo",
+        "Coral",
+        "Carl",
+        "Salsa",
+        "Lysa",
+        "Clifton",
+        "Elsie",
         "Brian",
         "Matt",
         "Eggbert",
@@ -42,13 +54,13 @@ public class QuoteGenerator  {
         "Populating Map",
         "Loading Potatoey Placeholder Art"
     };
-    public string GenerateName()
+    public static string GenerateName()
     {
         int r1 = Random.Range(0, firstNames.Count);
         int r2 = Random.Range(0, lastNames.Count);
         return (firstNames[r1] + lastNames[r2]);
     }
-    public string LoadingPhrase()
+    public static string LoadingPhrase()
     {
         int r1 = Random.Range(0, LoadPhrases.Count);
         return (LoadPhrases[r1]);

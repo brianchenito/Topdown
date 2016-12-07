@@ -7,7 +7,7 @@ using System.Collections.Generic;
 /// </summary>
 public class MainMenuInterface : MonoBehaviour {
     public SQLInterface sql;
-    public static GameManager gameManager;
+    public GameManager gameManager;
 
     public GameObject saveList;// direct set reference to save files ui display
     public List<GameObject> saveButtons;
@@ -95,8 +95,10 @@ public class MainMenuInterface : MonoBehaviour {
     {
         int index = sql.CreateNewSave(SaveEntry, PlayerEntry);
         PlayerEntry = newgameScreen.transform.FindChild("InputFieldPlayer").GetComponent<InputField>().text;
+        if (PlayerEntry == "") PlayerEntry = QuoteGenerator.GenerateName();
         SaveEntry = newgameScreen.transform.FindChild("InputFieldSave").GetComponent<InputField>().text;
-        Debug.Log("instantiating save with Player, "+ PlayerEntry+" save "+ SaveEntry);
+        if (SaveEntry == "") SaveEntry = "New Save " + index;
+        Debug.Log("instantiating save with Player, "+ PlayerEntry+" Save, "+ SaveEntry);
         
         gameManager.LaunchGame(index);
 
