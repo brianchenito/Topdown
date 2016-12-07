@@ -301,6 +301,16 @@ public class SQLInterface : MonoBehaviour {
     {
         return null;
     }
+    /// <summary>
+    /// pull the has_prop data associated with a level tile
+    /// </summary>
+    /// <param name="tileindex"></param>
+    /// <returns></returns>
+    public List<PropStats> getAssociatedProps(int tileindex)
+    {
+        return null;
+
+    }
 
     /// <summary>
     /// generate a new entry for save_files.
