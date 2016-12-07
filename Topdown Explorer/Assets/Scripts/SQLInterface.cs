@@ -13,9 +13,7 @@ using System.IO;
 /// like everything marked down below past line 250
 /// </summary>
 public class SQLInterface : MonoBehaviour {
-    public PlayerCharacter ActivePlayer;
     IDbConnection dbconn;
-    public int currentActiveSavefile;
     /// <summary>
     /// Built in Unity function used for initialization.
     /// this function is called a single time, upon activation.
@@ -23,7 +21,6 @@ public class SQLInterface : MonoBehaviour {
     /// that you should be doing constructor-y stuff here.
     /// </summary>
     void Start () {
-        currentActiveSavefile = 0;// 0 is a nonexistent save
         //instantiate a new database if one does not exist.
         String filePath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments)+ "\\TopdownGame\\topdown.db";
         if (File.Exists(filePath))
@@ -291,11 +288,13 @@ public class SQLInterface : MonoBehaviour {
     /// random generate a seed somehow, use MathF or something.
     /// This must also generate new entries for Player_Character, 
     /// contains_character,map_tiles(at coord 0,0), and contains_tile.
+    /// map tile should have a maximum enemies of 0, and a maximum pickups of 0.
+    /// returns index of newly generated save.
     /// </summary>
     /// <param name="name">The name of the save file</param>
-    public void CreateNewSave(String name)
+    public int CreateNewSave(String Savename, String Playername)
     {
-        return;
+        return 0;
     }
 
     /// <summary>
@@ -304,7 +303,7 @@ public class SQLInterface : MonoBehaviour {
     /// as needed,and returns the indexes of the newly instanced map tiles.
     /// </summary>
     /// <param name="prevtile">The tile the character just left. ignore from search.</param>
-    /// <param name="nextile">The tile the character is currently leaving.</param>
+    /// <param name="nextile">The tile the character is currently entering.</param>
     /// <returns> the indexes of all newly instanced tiles.</returns>
     public List<int> GenerateNewTiles(int prevtile, int nexttile)
     {
@@ -374,7 +373,6 @@ public class SQLInterface : MonoBehaviour {
     public void healPlayer(int player, bool bigheals)
     {
         //SQL STUFF HERE.
-        ActivePlayer.UpdateHealth();
         return;
     }
 
@@ -398,7 +396,6 @@ public class SQLInterface : MonoBehaviour {
 
     public void ActivateArrows(int player)
     {
-        ActivePlayer.UpdateArrows();
     }
     public void ActivateBow() { }
     public void ActivateShield() { }
