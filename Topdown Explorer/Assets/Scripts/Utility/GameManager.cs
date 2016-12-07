@@ -53,4 +53,5 @@ public class GameManager : MonoBehaviour {
 	void Update () {
 	
 	}
+    public void LaunchGame(int index) { }
 }
