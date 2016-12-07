@@ -311,6 +311,10 @@ public class SQLInterface : MonoBehaviour {
         return null;
 
     }
+    public List<PickupStats> getAssociatedPickups(int tileindex)
+    {
+        return null;
+    }
 
     /// <summary>
     /// generate a new entry for save_files.
