@@ -6,6 +6,7 @@ using System.Collections.Generic;
 /// </summary>
 public class pathNode
 {
+    public static  float sqrt2= Mathf.Sqrt(2);
     public static List<Vector3> adjacents = new List<Vector3>()
     {
         // the eight directions neighbor nodes can be in 
@@ -69,7 +70,7 @@ public class AStarPathfinder {
     {
         HashSet<Vector3> closedSet = new HashSet<Vector3>();  // explored positions.
         List<pathNode> fringe = new  List<pathNode>();// q to explore
-        pathNode startNode = new pathNode(startpos, null, guesstimate(startpos, endpos), 0);
+        pathNode startNode = new pathNode(startpos, null, guesstimate(startpos,startpos, endpos), 0);
         fringe.Add(startNode);
         int depth = 0;
         while (fringe.Count != 0)
@@ -99,7 +100,7 @@ public class AStarPathfinder {
             foreach (Vector3 i in pathNode.adjacents)
             {
                 if (closedSet.Contains(current.position + i)) continue;
-                float guessfscore = guesstimate(current.position + i, endpos);
+                float guessfscore = guesstimate(startpos,current.position + i, endpos);
                 float guessgscore = current.partialcost + i.magnitude;
                 pathNode foundinFringe=null;
                 foreach (pathNode j in fringe)
@@ -146,11 +147,14 @@ public class AStarPathfinder {
     /// <param name="start"> origin point</param>
     /// <param name="end"> destination point</param>
     /// <returns></returns>
-    private static float guesstimate(Vector3 start, Vector3 end)
+    private static float guesstimate(Vector3 start, Vector3 current, Vector3 end)
     {
-        float dx = Mathf.Abs(start.x - end.x);
-        float dz = Mathf.Abs(start.z - end.z);
-        return (dx + dz)+(-0.58f)*Mathf.Min(dx,dz);
+        float dx1 = start.x - end.x;
+        float dz1 = start.z - end.z;
+        float dx2 = current.x - end.x;
+        float dz2 = current.z - end.z;
+        float cross = Mathf.Abs(dx1 * dz2 - dx2 * dz1);
+        return (Mathf.Abs(dx2)+Mathf.Abs(dz2)-(pathNode.sqrt2-2)*Mathf.Min(Mathf.Abs(dx2),Mathf.Abs(dz2)))+cross*0.1f;
 
 
     }
