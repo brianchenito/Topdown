@@ -409,8 +409,33 @@ public class SQLInterface : MonoBehaviour {
     /// <returns></returns>
     public List<PropStats> getAssociatedProps(int tileindex)
     {
-        return null;
+        List<PropStats> list = new List<PropStats>();
 
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        dbcmd.CommandText =
+            "SELECT pr_typeID, pr_name, pr_size_x, pr_size_y, cpr_lLocX, cpr_lLocy, t_gcoord_x, t_gcoord_y " +
+            "FROM prop, contains_prop, map_tile " +
+            "WHERE " + tileindex + " = cpr_tileID " +
+            "AND cpr_propID = pr_typeID; ";
+        IDataReader reader = dbcmd.ExecuteReader();
+        int type = 0;
+        string name = "wabuffet";
+        Vector2 size = Vector2.zero;
+        IntVector global_coords = new IntVector();
+        Vector2 local_coords = Vector2.zero;
+        while (reader.Read())
+        {
+            type = reader.GetInt32(reader.GetOrdinal("pr_typeID"));
+            name = reader.GetString(reader.GetOrdinal("pr_name"));
+            global_coords = new IntVector(reader.GetInt32(reader.GetOrdinal("t_gcoord_x")), reader.GetInt32(reader.GetOrdinal("t_gcoord_y")));
+            local_coords = new Vector2(reader.GetFloat(reader.GetOrdinal("cpr_lLocX")), reader.GetFloat(reader.GetOrdinal("cpr_lLocY")));
+            size = new Vector2(reader.GetFloat(reader.GetOrdinal("pr_size_x")), reader.GetFloat(reader.GetOrdinal("pr_size_y")));
+            Debug.Log(reader.GetString(0));
+            list.Add(new PropStats(type, name, global_coords, local_coords, size));
+
+            
+            }
+        return list;
     }
     public List<PickupStats> getAssociatedPickups(int tileindex)
     {
