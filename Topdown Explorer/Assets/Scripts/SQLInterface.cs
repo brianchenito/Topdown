@@ -34,6 +34,7 @@ public class SQLInterface : MonoBehaviour {
             InstantiateFreshDB(filePath);
             PopulateStaticTables();
         }
+        getAssociatedCharacterStats(1);
 
 
     }
@@ -269,8 +270,27 @@ public class SQLInterface : MonoBehaviour {
     /// <returns> a list of KV pairs(int, string)</returns>
     public List<KeyValuePair<int,String>> GetSaves()
     {
-        return null;
+        List<KeyValuePair<int, string>> list = new List<KeyValuePair<int,string>>();
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        dbcmd.CommandText = 
+            "SELECT sf_id, sf_name "+ 
+            "FROM save_files";
+        IDataReader reader = dbcmd.ExecuteReader();
+        while (reader.Read())
+        {
+            int index = reader.GetInt32(reader.GetOrdinal("sf_id"));
+            string name = reader.GetString(reader.GetOrdinal("sf_name"));
+            Debug.Log(reader.GetString(0));
+            list.Add(new KeyValuePair<int,string>(index, name));
+
+        }
+        reader.Close();
+        dbcmd.Dispose();
+
+
+        return list;
     }
+    
 
     /// <summary>
     /// pull the data of the character associated with a save file. 
@@ -280,7 +300,35 @@ public class SQLInterface : MonoBehaviour {
     /// <returns></returns>
     public CharacterStats getAssociatedCharacterStats(int saveIndex)
     {
-        return null;
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        dbcmd.CommandText = 
+            "SELECT pc_id, pc_name, pc_exp, pc_dmg, pc_lCoordX, pc_lCoordY, pc_gCoordX, pc_gCoordY "+ 
+            "FROM player_character,contains_character,save_files "+
+            "WHERE pc_id = cc_characterID " +
+            "AND cc_saveID = sf_id ";
+        IDataReader reader = dbcmd.ExecuteReader();
+        int index = 0;
+        string name = "meow";
+        float exp = 0;
+        float dmg = 0;
+        Vector2 local_coord = Vector2.zero ;
+        IntVector global_coord = new IntVector();
+        while (reader.Read())
+        {
+            index = reader.GetInt32(reader.GetOrdinal("pc_id"));
+            name = reader.GetString(reader.GetOrdinal("pc_name"));
+            exp = reader.GetFloat(reader.GetOrdinal("pc_exp"));
+            dmg = reader.GetFloat(reader.GetOrdinal("pc_dmg"));
+            local_coord = new Vector2(reader.GetFloat(reader.GetOrdinal("pc_lCoordX")), reader.GetFloat(reader.GetOrdinal("pc_lCoordY")));
+            global_coord = new IntVector( reader.GetInt32(reader.GetOrdinal("pc_gCoordX")), reader.GetInt32(reader.GetOrdinal("pc_gCoordY")));
+
+
+            Debug.Log(reader.GetString(0));
+        }
+        CharacterStats stats = new CharacterStats(index, name, global_coord, local_coord, exp, dmg);
+        reader.Close();
+        dbcmd.Dispose();
+        return stats;
     }
     /// <summary>
     /// get all tiles associated with a save file.
@@ -290,7 +338,28 @@ public class SQLInterface : MonoBehaviour {
     /// <returns></returns>
     public List<KeyValuePair<int, IntVector>> getAssociatedTiles(int saveIndex)
     {
-        return null;
+        List<KeyValuePair<int, IntVector>> list = new List<KeyValuePair<int, IntVector>>();
+
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        dbcmd.CommandText =
+            "SELECT t_id, t_gcoord_x, t_gcoord_y " +
+            "FROM map_tiles, contains_tile, save_files " + 
+            "WHERE t_id = ct_tileID " +
+            "AND ct_saveID = " + saveIndex + " " ;
+        IDataReader reader = dbcmd.ExecuteReader();
+        int tileindex = 0;
+        IntVector global_coord = new IntVector();
+        while (reader.Read())
+        {
+            tileindex = reader.GetInt32(reader.GetOrdinal("t_id"));
+            global_coord = new IntVector(reader.GetInt32(reader.GetOrdinal("t_gcoord_x")), reader.GetInt32(reader.GetOrdinal("t_gcoord_y")));
+            Debug.Log(reader.GetString(0));
+            list.Add(new KeyValuePair<int, IntVector>(tileindex, global_coord));
+
+        }
+        reader.Close();
+        dbcmd.Dispose();
+        return list;
     }
     /// <summary>
     /// pull the data of the has_enmemy associated with a level tile
@@ -299,7 +368,28 @@ public class SQLInterface : MonoBehaviour {
     /// <returns></returns>
     public List<EnemyStats> getAssociatedEnemies(int tileIndex)
     {
-        return null;
+        List<EnemyStats> list = new List<EnemyStats>();
+
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        dbcmd.CommandText =
+            "SELECT e_typeID, e_name, e_exp, e_maxHealth " +
+            "FROM map_tiles, contains_tile, save_files " +
+            "WHERE t_id = ct_tileID " +
+            "AND ct_saveID = sf_ID ";
+        IDataReader reader = dbcmd.ExecuteReader();
+        int tileindex = 0;
+        IntVector global_coord = new IntVector();
+        while (reader.Read())
+        {
+            tileindex = reader.GetInt32(reader.GetOrdinal("t_id"));
+            global_coord = new IntVector(reader.GetInt32(reader.GetOrdinal("t_gcoord_x")), reader.GetInt32(reader.GetOrdinal("t_gcoord_y")));
+            Debug.Log(reader.GetString(0));
+            list.Add(new KeyValuePair<int, IntVector>(tileindex, global_coord));
+
+        }
+        reader.Close();
+        dbcmd.Dispose();
+        return list;
     }
     /// <summary>
     /// pull the has_prop data associated with a level tile
@@ -328,6 +418,20 @@ public class SQLInterface : MonoBehaviour {
     /// <param name="name">The name of the save file</param>
     public int CreateNewSave(String Savename, String Playername)
     {
+        string time = DateTime.Now.ToString("h:mm:ss tt");
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        dbcmd.CommandText =
+            "INSERT INTO save_files VALUES(null, " + Savename+ " , " + time + " , " + time + " ); " +
+            "INSERT INTO player_character VALUES(null, " + Playername + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 9 + " , " + 1 + " ); "
+            "INSERT INTO player_character VALUES
+            ;
+        IDataReader reader = dbcmd.ExecuteReader();
+        while (reader.Read())
+        {
+            Debug.Log(reader.GetString(0));
+        }
+        reader.Close();
+        dbcmd.Dispose();
         return 0;
     }
 
