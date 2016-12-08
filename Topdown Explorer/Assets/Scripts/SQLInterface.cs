@@ -373,7 +373,7 @@ public class SQLInterface : MonoBehaviour {
         IDbCommand dbcmd = dbconn.CreateCommand();
         dbcmd.CommandText =
             "SELECT e_typeID, e_name, e_exp, e_maxHealth " +
-            "FROM map_tiles, contains_tile, save_files " +
+            "FROM enemy, has_enemy, save_files " +
             "WHERE t_id = ct_tileID " +
             "AND ct_saveID = sf_ID ";
         IDataReader reader = dbcmd.ExecuteReader();
@@ -384,7 +384,7 @@ public class SQLInterface : MonoBehaviour {
             tileindex = reader.GetInt32(reader.GetOrdinal("t_id"));
             global_coord = new IntVector(reader.GetInt32(reader.GetOrdinal("t_gcoord_x")), reader.GetInt32(reader.GetOrdinal("t_gcoord_y")));
             Debug.Log(reader.GetString(0));
-            list.Add(new KeyValuePair<int, IntVector>(tileindex, global_coord));
+            //list.Add(new KeyValuePair<int, IntVector>(tileindex, global_coord));
 
         }
         reader.Close();
@@ -421,9 +421,9 @@ public class SQLInterface : MonoBehaviour {
         string time = DateTime.Now.ToString("h:mm:ss tt");
         IDbCommand dbcmd = dbconn.CreateCommand();
         dbcmd.CommandText =
-            "INSERT INTO save_files VALUES(null, " + Savename+ " , " + time + " , " + time + " ); " +
-            "INSERT INTO player_character VALUES(null, " + Playername + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 9 + " , " + 1 + " ); "
-            "INSERT INTO player_character VALUES
+            "INSERT INTO save_files VALUES(null, " + Savename + " , " + time + " , " + time + " ); " +
+            "INSERT INTO player_character VALUES(null, " + Playername + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 9 + " , " + 1 + " ); " +
+            "INSERT INTO player_character VALUES"
             ;
         IDataReader reader = dbcmd.ExecuteReader();
         while (reader.Read())
