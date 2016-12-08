@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 [RequireComponent(typeof(SQLInterface))]
@@ -6,6 +8,15 @@ using System.Collections.Generic;
 /// interprets io from <see cref="SQLInterface"/> and performs in game actions.  
 /// </summary>
 public class GameManager : MonoBehaviour {
+    private bool isPaused;
+    private AsyncOperation loadop;
+
+    public GameObject pauseScreen;
+    public GameObject Loadscreen;
+    public GameObject quitMenu;// dirct set reference to quit ui display
+
+    public Text loadtext;
+
     public static GameObject Character;
     public static Dictionary<int, GameObject> EnemyClasses;
     public static Dictionary<int, GameObject> PickupClasses;
@@ -13,6 +24,8 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+        isPaused = false;
         DontDestroyOnLoad(transform.gameObject);
 
         EnemyClasses =new Dictionary<int, GameObject>()
@@ -51,9 +64,59 @@ public class GameManager : MonoBehaviour {
 
     }
 	
-	// Update is called once per frame
 	void Update () {
-	
-	}
-    public void LaunchGame(int index) { }
+        if (loadop != null)
+        {
+            if (loadop.isDone)
+            {
+                Loadscreen.SetActive(false);
+                loadop = null;
+            }
+
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused)
+            {
+                isPaused = false;
+                pauseScreen.SetActive(false);
+                Time.timeScale = 1;
+            }
+            else
+            {
+                isPaused = true;
+                pauseScreen.SetActive(true);
+                Time.timeScale = 0;
+            }
+        }
+
+    }
+    public void LaunchGame(int index)
+    {
+        loadtext.text = QuoteGenerator.LoadingPhrase();
+        Loadscreen.SetActive(true);
+        loadop=SceneManager.LoadSceneAsync("Scenes/TopDownScene");
+
+
+    }
+    /// <summary>
+    /// call up the quit menu.
+    /// </summary>
+    public void showQuit()
+    {
+        quitMenu.SetActive(true);
+    }
+
+    public void ReturntoMainMenu()
+    {
+        Debug.Log(" returning");
+        loadop = SceneManager.LoadSceneAsync("Scenes/MainMenu");
+        Time.timeScale = 1;
+        Loadscreen.SetActive(true);
+        Destroy(gameObject);
+    }
+    public void hidePauseScreen()
+    {
+        pauseScreen.SetActive(false);
+    }
 }

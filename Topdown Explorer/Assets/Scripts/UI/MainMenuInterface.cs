@@ -12,7 +12,6 @@ public class MainMenuInterface : MonoBehaviour {
     public GameObject saveList;// direct set reference to save files ui display
     public List<GameObject> saveButtons;
 
-    public GameObject quitMenu;// dirct set reference to quit ui display
 
     public GameObject newgameScreen;
 
@@ -68,13 +67,7 @@ public class MainMenuInterface : MonoBehaviour {
         newgameScreen.SetActive(active);
     }
 
-    /// <summary>
-    /// call up the quit menu.
-    /// </summary>
-    public void showQuit()
-    {
-        quitMenu.SetActive(true);
-    }
+
     public void addToSaveList(int index, string label)
     {
         GameObject newbutton = GameObject.Instantiate(Resources.Load("Prefabs/LoadLevelButton")) as GameObject;
