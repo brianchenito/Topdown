@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+
 /// <summary>
 /// primary manager for all main menu functionality.
 /// </summary>
@@ -10,6 +11,7 @@ public class MainMenuInterface : MonoBehaviour {
     public GameManager gameManager;
 
     public GameObject saveList;// direct set reference to save files ui display
+    public GameObject saveMask;
     public List<GameObject> saveButtons;
 
 
@@ -41,7 +43,7 @@ public class MainMenuInterface : MonoBehaviour {
         }
         saveButtons.Clear();
         List<KeyValuePair<int, string>> saves = sql.GetSaves();
-        if (saves != null)
+        if (saves != null||saves.Count<1)
         {
             saveList.transform.Find("No Saves").gameObject.SetActive(false);
             foreach (KeyValuePair<int, string> pair in saves)
@@ -51,7 +53,6 @@ public class MainMenuInterface : MonoBehaviour {
         }
         else
         {
-            Debug.Log("<Color=red>GetSaves() is not yet implemented</Color>");
             saveList.transform.Find("No Saves").gameObject.SetActive(true);
 
         }
@@ -71,7 +72,7 @@ public class MainMenuInterface : MonoBehaviour {
     public void addToSaveList(int index, string label)
     {
         GameObject newbutton = GameObject.Instantiate(Resources.Load("Prefabs/LoadLevelButton")) as GameObject;
-        newbutton.transform.parent = saveList.transform;
+        newbutton.transform.SetParent (saveMask.transform);
         newbutton.GetComponentInChildren<Text>().text = label;
         newbutton.transform.localPosition = new Vector2(0,150-50*saveButtons.Count);
         saveButtons.Add(newbutton);
@@ -86,11 +87,12 @@ public class MainMenuInterface : MonoBehaviour {
     /// <param name="saveFile"></param>
     public void LaunchNewGame()
     {
-        int index = sql.CreateNewSave(SaveEntry, PlayerEntry);
         PlayerEntry = newgameScreen.transform.FindChild("InputFieldPlayer").GetComponent<InputField>().text;
         if (PlayerEntry == "") PlayerEntry = QuoteGenerator.GenerateName();
         SaveEntry = newgameScreen.transform.FindChild("InputFieldSave").GetComponent<InputField>().text;
-        if (SaveEntry == "") SaveEntry = "New Save " + index;
+        if (SaveEntry == "") SaveEntry = "New Save " + System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        int index = sql.CreateNewSave(SaveEntry, PlayerEntry);
+
         Debug.Log("instantiating save with Player, "+ PlayerEntry+" Save, "+ SaveEntry);
         
         gameManager.LaunchGame(index);

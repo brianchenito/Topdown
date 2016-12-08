@@ -11,12 +11,14 @@ public class QuoteGenerator  {
         "Dolores",
         "Emily",
         "Rodrigo",
+        "Marcie",
         "Coral",
         "Carl",
         "Salsa",
         "Lysa",
         "Clifton",
         "Elsie",
+        "Ryu",
         "Brian",
         "Matt",
         "Eggbert",
@@ -40,7 +42,8 @@ public class QuoteGenerator  {
         ", First of his Name",
         " Eggman",
         " Bobobobo",
-        " McFlexesaLot"
+        " McFlexesaLot",
+        " The Clumsy"
 
     };
     static List<string> LoadPhrases = new List<string>()
@@ -49,7 +52,7 @@ public class QuoteGenerator  {
         "Summoning Skeltals",
         "Pouring Gasoline on Swords",
         "Failing CSE-175",
-        "Spamming Fox's Shine",
+        "Spamming Fox's Multi-Shine",
         "Procedurally Generating Tiles",
         "Populating Map",
         "Loading Potatoey Placeholder Art"

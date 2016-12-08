@@ -34,7 +34,6 @@ public class SQLInterface : MonoBehaviour {
             InstantiateFreshDB(filePath);
             PopulateStaticTables();
         }
-        getAssociatedCharacterStats(1);
 
 
     }
@@ -280,7 +279,7 @@ public class SQLInterface : MonoBehaviour {
         {
             int index = reader.GetInt32(reader.GetOrdinal("sf_id"));
             string name = reader.GetString(reader.GetOrdinal("sf_name"));
-            Debug.Log(reader.GetString(0));
+            Debug.Log(reader.GetInt32(0));
             list.Add(new KeyValuePair<int,string>(index, name));
 
         }
@@ -323,7 +322,6 @@ public class SQLInterface : MonoBehaviour {
             global_coord = new IntVector( reader.GetInt32(reader.GetOrdinal("pc_gCoordX")), reader.GetInt32(reader.GetOrdinal("pc_gCoordY")));
 
 
-            Debug.Log(reader.GetString(0));
         }
         CharacterStats stats = new CharacterStats(index, name, global_coord, local_coord, exp, dmg);
         reader.Close();
@@ -454,17 +452,23 @@ public class SQLInterface : MonoBehaviour {
     /// <param name="name">The name of the save file</param>
     public int CreateNewSave(String Savename, String Playername)
     {
-        string time = DateTime.Now.ToString("h:mm:ss tt");
+        string time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        string seed = String.Format("#{0:X8}", UnityEngine.Random.Range(0, int.MaxValue));
+
+        // get newest index for save file
         IDbCommand dbcmd = dbconn.CreateCommand();
-        dbcmd.CommandText = "SELECT MAX(sf_id) as index FROM save_files";
-        // shits broken here
-        IDataReader reader = dbcmd.ExecuteReader();
+        dbcmd.CommandText = "SELECT IFNULL( MAX(sf_id) , 0) AS 'index' FROM save_files";
         int newSaveIndex = 0;
+        IDataReader reader = dbcmd.ExecuteReader();
         while (reader.Read())
         {
-            newSaveIndex = reader.GetInt32(reader.GetOrdinal("index")) + 1;
+            newSaveIndex = reader.GetInt32(reader.GetOrdinal("index"))+1;
+
         }
-        dbcmd.CommandText = "SELECT MAX(pc_ID) as index FROM player_character";
+        dbcmd.Dispose();
+
+        // get newest index for player
+        dbcmd.CommandText = "SELECT IFNULL( MAX(pc_ID), 0 ) as 'index' FROM player_character";
         reader = dbcmd.ExecuteReader();
         int newPlayerIndex = 0;
         while (reader.Read())
@@ -472,13 +476,29 @@ public class SQLInterface : MonoBehaviour {
 
             newPlayerIndex = reader.GetInt32(reader.GetOrdinal("index"))+1;
         }
+        dbcmd.Dispose();
+
+        dbcmd.CommandText = "SELECT IFNULL(MAX(t_id),0) AS 'index' FROM map_tiles";
+        reader = dbcmd.ExecuteReader();
+        int newMapIndex = 0;
+        while (reader.Read())
+        {
+
+            newMapIndex = reader.GetInt32(reader.GetOrdinal("index")) + 1;
+        }
+        dbcmd.Dispose();
+
 
         dbcmd.CommandText =
-            "INSERT INTO save_files VALUES( " +newSaveIndex+" , "+ Savename + " , " + time + " , " + time + " ); " +
-            "INSERT INTO player_character VALUES( "+newPlayerIndex+" , " + Playername + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 9 + " , " + 1 + " ); " +
-            "INSERT INTO player_character VALUES"
+            "INSERT INTO save_files VALUES ( " + newSaveIndex + " , '" + Savename + "' , '" + seed + "' , '" + time + "' ); "+
+            "INSERT INTO player_character VALUES( "+ newPlayerIndex+" , '" + Playername + "' , " + 0 + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 12 + " , " + 1 + " ); " +
+            "INSERT INTO map_Tiles VALUES( "+ newMapIndex+", 0, 0, "+newSaveIndex+ ", 0, '" +time+ "' , 0 , 0  );"+
+            "INSERT INTO contains_tile VALUES( "+ newSaveIndex+ " , "+ newMapIndex+" );"+
+            "INSERT INTO contains_character VALUES( "+ newSaveIndex+" , "+ newPlayerIndex+ " );"
+
             ;
         dbcmd.ExecuteNonQuery();
+        Debug.Log("Checkpoint");
         dbcmd.Dispose();
         return newSaveIndex;
     }
@@ -551,7 +571,7 @@ public class SQLInterface : MonoBehaviour {
         return;
     }
     /// <summary>
-    /// restore health to player character, up to 9 hp.
+    /// restore health to player character, up to 12 hp.
     /// if bigheals, restore 4 hp. otherwise,restore 2.
     /// </summary>
     /// <param name="player"> index of player character to modify health.</param>

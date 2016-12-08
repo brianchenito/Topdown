@@ -93,6 +93,7 @@ public class GameManager : MonoBehaviour {
     }
     public void LaunchGame(int index)
     {
+        Debug.Log("LaunchingGame");
         loadtext.text = QuoteGenerator.LoadingPhrase();
         Loadscreen.SetActive(true);
         loadop=SceneManager.LoadSceneAsync("Scenes/TopDownScene");
@@ -109,11 +110,20 @@ public class GameManager : MonoBehaviour {
 
     public void ReturntoMainMenu()
     {
-        Debug.Log(" returning");
-        loadop = SceneManager.LoadSceneAsync("Scenes/MainMenu");
+        isPaused = false;
+
         Time.timeScale = 1;
-        Loadscreen.SetActive(true);
-        Destroy(gameObject);
+        if (SceneManager.GetActiveScene().name == "Scenes/TopDownScene")
+        {
+            Debug.Log(" returning");
+            loadop = SceneManager.LoadSceneAsync("Scenes/MainMenu");
+            Loadscreen.SetActive(true);
+            Destroy(gameObject);
+        }
+        else
+        {
+            hidePauseScreen();
+        }
     }
     public void hidePauseScreen()
     {
