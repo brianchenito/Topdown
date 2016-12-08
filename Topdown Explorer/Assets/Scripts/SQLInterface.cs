@@ -305,7 +305,7 @@ public class SQLInterface : MonoBehaviour {
             "SELECT pc_id, pc_name, pc_exp, pc_damage, pc_lCoordX, pc_lCoordY, pc_gCoordX, pc_gCoordY "+ 
             "FROM player_character,contains_character,save_files "+
             "WHERE pc_id = cc_characterID " +
-            "AND cc_saveID = sf_id ";
+            "AND cc_saveID = sf_id; ";
         IDataReader reader = dbcmd.ExecuteReader();
         int index = 0;
         string name = "meow";
@@ -345,7 +345,7 @@ public class SQLInterface : MonoBehaviour {
             "SELECT t_id, t_gcoord_x, t_gcoord_y " +
             "FROM map_tiles, contains_tile, save_files " + 
             "WHERE t_id = ct_tileID " +
-            "AND ct_saveID = " + saveIndex + " " ;
+            "AND ct_saveID = " + saveIndex + "; " ;
         IDataReader reader = dbcmd.ExecuteReader();
         int tileindex = 0;
         IntVector global_coord = new IntVector();
@@ -372,21 +372,32 @@ public class SQLInterface : MonoBehaviour {
 
         IDbCommand dbcmd = dbconn.CreateCommand();
         dbcmd.CommandText =
-            "SELECT e_typeID, e_name, e_exp, e_maxHealth " +
+            "SELECT e_typeID, e_name, e_exp, e_maxHealth, ce_lLocX, ce_lLocy, ce_instancehp, t_gcoord_x, t_gcoord_y " +
             "FROM enemy, contains_enemy, map_tile " +
-            "WHERE t_id = ce_tileID " +
-            "AND ce_enemyID = e_ID ";
+            "WHERE " + tileIndex + " = ce_tileID " +
+            "AND ce_enemyID = e_ID; ";
         IDataReader reader = dbcmd.ExecuteReader();
-        int tileindex = 0;
-        IntVector global_coord = new IntVector();
+        int type = 0;
+        string name = "wabuffet";
+        float exp = 0;
+        float maxhp = 0;
+        IntVector global_coords = new IntVector();
+        Vector2 local_coords = Vector2.zero;
+        float currenthp = 0;
         while (reader.Read())
         {
-            tileindex = reader.GetInt32(reader.GetOrdinal("t_id"));
-            global_coord = new IntVector(reader.GetInt32(reader.GetOrdinal("t_gcoord_x")), reader.GetInt32(reader.GetOrdinal("t_gcoord_y")));
+            type = reader.GetInt32(reader.GetOrdinal("e_typeID"));
+            name = reader.GetString(reader.GetOrdinal("e_name"));
+            exp = reader.GetFloat(reader.GetOrdinal("e_exp"));
+            maxhp = reader.GetFloat(reader.GetOrdinal("e_maxHealth"));
+            currenthp = reader.GetFloat(reader.GetOrdinal("ce_instancehp"));
+            global_coords = new IntVector(reader.GetInt32(reader.GetOrdinal("t_gcoord_x")),reader.GetInt32(reader.GetOrdinal("t_gcoord_y")));
+            local_coords = new Vector2(reader.GetFloat(reader.GetOrdinal("ce_lLocX")), reader.GetFloat(reader.GetOrdinal("ce_lLocY")));
             Debug.Log(reader.GetString(0));
-            //list.Add(new KeyValuePair<int, IntVector>(tileindex, global_coord));
+            list.Add(new EnemyStats(type, name, global_coords, local_coords, exp, maxhp, currenthp));
 
         }
+
         reader.Close();
         dbcmd.Dispose();
         return list;
