@@ -431,19 +431,31 @@ public class SQLInterface : MonoBehaviour {
     {
         string time = DateTime.Now.ToString("h:mm:ss tt");
         IDbCommand dbcmd = dbconn.CreateCommand();
-        dbcmd.CommandText =
-            "INSERT INTO save_files VALUES(null, " + Savename + " , " + time + " , " + time + " ); " +
-            "INSERT INTO player_character VALUES(null, " + Playername + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 9 + " , " + 1 + " ); " +
-            "INSERT INTO player_character VALUES"
-            ;
+        dbcmd.CommandText = "SELECT MAX(sf_id) as index FROM save_files";
+        // shits broken here
         IDataReader reader = dbcmd.ExecuteReader();
+        int newSaveIndex = 0;
         while (reader.Read())
         {
-            Debug.Log(reader.GetString(0));
+            newSaveIndex = reader.GetInt32(reader.GetOrdinal("index")) + 1;
         }
-        reader.Close();
+        dbcmd.CommandText = "SELECT MAX(pc_ID) as index FROM player_character";
+        reader = dbcmd.ExecuteReader();
+        int newPlayerIndex = 0;
+        while (reader.Read())
+        {
+
+            newPlayerIndex = reader.GetInt32(reader.GetOrdinal("index"))+1;
+        }
+
+        dbcmd.CommandText =
+            "INSERT INTO save_files VALUES( " +newSaveIndex+" , "+ Savename + " , " + time + " , " + time + " ); " +
+            "INSERT INTO player_character VALUES( "+newPlayerIndex+" , " + Playername + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 9 + " , " + 1 + " ); " +
+            "INSERT INTO player_character VALUES"
+            ;
+        dbcmd.ExecuteNonQuery();
         dbcmd.Dispose();
-        return 0;
+        return newSaveIndex;
     }
 
     /// <summary>
