@@ -302,7 +302,7 @@ public class SQLInterface : MonoBehaviour {
     {
         IDbCommand dbcmd = dbconn.CreateCommand();
         dbcmd.CommandText = 
-            "SELECT pc_id, pc_name, pc_exp, pc_dmg, pc_lCoordX, pc_lCoordY, pc_gCoordX, pc_gCoordY "+ 
+            "SELECT pc_id, pc_name, pc_exp, pc_damage, pc_lCoordX, pc_lCoordY, pc_gCoordX, pc_gCoordY "+ 
             "FROM player_character,contains_character,save_files "+
             "WHERE pc_id = cc_characterID " +
             "AND cc_saveID = sf_id ";
@@ -318,7 +318,7 @@ public class SQLInterface : MonoBehaviour {
             index = reader.GetInt32(reader.GetOrdinal("pc_id"));
             name = reader.GetString(reader.GetOrdinal("pc_name"));
             exp = reader.GetFloat(reader.GetOrdinal("pc_exp"));
-            dmg = reader.GetFloat(reader.GetOrdinal("pc_dmg"));
+            dmg = reader.GetFloat(reader.GetOrdinal("pc_damage"));
             local_coord = new Vector2(reader.GetFloat(reader.GetOrdinal("pc_lCoordX")), reader.GetFloat(reader.GetOrdinal("pc_lCoordY")));
             global_coord = new IntVector( reader.GetInt32(reader.GetOrdinal("pc_gCoordX")), reader.GetInt32(reader.GetOrdinal("pc_gCoordY")));
 
@@ -373,9 +373,9 @@ public class SQLInterface : MonoBehaviour {
         IDbCommand dbcmd = dbconn.CreateCommand();
         dbcmd.CommandText =
             "SELECT e_typeID, e_name, e_exp, e_maxHealth " +
-            "FROM enemy, has_enemy, save_files " +
-            "WHERE t_id = ct_tileID " +
-            "AND ct_saveID = sf_ID ";
+            "FROM enemy, contains_enemy, map_tile " +
+            "WHERE t_id = ce_tileID " +
+            "AND ce_enemyID = e_ID ";
         IDataReader reader = dbcmd.ExecuteReader();
         int tileindex = 0;
         IntVector global_coord = new IntVector();
