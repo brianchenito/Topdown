@@ -8,20 +8,28 @@ using System.Collections.Generic;
 /// interprets io from <see cref="SQLInterface"/> and performs in game actions.  
 /// </summary>
 public class GameManager : MonoBehaviour {
+    //locals
     private bool isPaused;
     private AsyncOperation loadop;
 
+    //gameplay
+    private int activeSaveIndex = 0;
+    private List<GameObject> tiles=new List<GameObject>();
+
+
+    //ui
     public GameObject pauseScreen;
     public GameObject Loadscreen;
     public GameObject quitMenu;// dirct set reference to quit ui display
-
     public Text loadtext;
 
-    public static GameObject Character;
+    //helpers
+    public static int mapscale=100;
+    public SQLInterface sql;
     public static Dictionary<int, GameObject> EnemyClasses;
     public static Dictionary<int, GameObject> PickupClasses;
-    public static Dictionary<int, GameObject> PropClasses; 
-
+    public static Dictionary<int, GameObject> PropClasses;
+    public static GameObject TileFab;
 	// Use this for initialization
 	void Start () {
 
@@ -61,7 +69,7 @@ public class GameManager : MonoBehaviour {
             { 7, Resources.Load("Prefabs/SpikedPole") as GameObject},
             { 8, Resources.Load("Prefabs/Chandelier") as GameObject},
         };
-
+        TileFab = Resources.Load("Prefabs/Tile") as GameObject;
     }
 	
 	void Update () {
@@ -69,8 +77,22 @@ public class GameManager : MonoBehaviour {
         {
             if (loadop.isDone)
             {
+                // start instantiating tiles
+               List<KeyValuePair<int,IntVector>> tilesdata=sql.getAssociatedTiles(activeSaveIndex);
+                foreach (KeyValuePair<int, IntVector> k in tilesdata)
+                {
+                    Debug.Log("instantiating tile " + k.Key + " at " + k.Value.x + ", " + k.Value.y);
+                    GameObject newTile = GameObject.Instantiate(TileFab);
+                    newTile.transform.position= new Vector3(k.Value.x, 0, k.Value.y)*mapscale;
+                    newTile.GetComponent<Tile>().GlobalCoords = k.Value;
+                    newTile.GetComponent<Tile>().index = k.Key;
+
+                    tiles.Add(newTile);
+                }
+
                 Loadscreen.SetActive(false);
                 loadop = null;
+                Time.timeScale = 1;
             }
 
         }
@@ -94,9 +116,11 @@ public class GameManager : MonoBehaviour {
     public void LaunchGame(int index)
     {
         Debug.Log("LaunchingGame");
+        activeSaveIndex = index;
         loadtext.text = QuoteGenerator.LoadingPhrase();
         Loadscreen.SetActive(true);
         loadop=SceneManager.LoadSceneAsync("Scenes/TopDownScene");
+        Time.timeScale = 0;
 
 
     }

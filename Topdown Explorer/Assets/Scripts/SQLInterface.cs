@@ -279,7 +279,7 @@ public class SQLInterface : MonoBehaviour {
         {
             int index = reader.GetInt32(reader.GetOrdinal("sf_id"));
             string name = reader.GetString(reader.GetOrdinal("sf_name"));
-            Debug.Log(reader.GetInt32(0));
+            Debug.Log("Loading Save "+ reader.GetInt32(0));
             list.Add(new KeyValuePair<int,string>(index, name));
 
         }
@@ -341,9 +341,8 @@ public class SQLInterface : MonoBehaviour {
         IDbCommand dbcmd = dbconn.CreateCommand();
         dbcmd.CommandText =
             "SELECT t_id, t_gcoord_x, t_gcoord_y " +
-            "FROM map_tiles, contains_tile, save_files " + 
-            "WHERE t_id = ct_tileID " +
-            "AND ct_saveID = " + saveIndex + "; " ;
+            "FROM map_tiles " +
+            "WHERE t_save_id =  " + saveIndex + " ;";
         IDataReader reader = dbcmd.ExecuteReader();
         int tileindex = 0;
         IntVector global_coord = new IntVector();
@@ -351,7 +350,6 @@ public class SQLInterface : MonoBehaviour {
         {
             tileindex = reader.GetInt32(reader.GetOrdinal("t_id"));
             global_coord = new IntVector(reader.GetInt32(reader.GetOrdinal("t_gcoord_x")), reader.GetInt32(reader.GetOrdinal("t_gcoord_y")));
-            Debug.Log(reader.GetString(0));
             list.Add(new KeyValuePair<int, IntVector>(tileindex, global_coord));
 
         }
