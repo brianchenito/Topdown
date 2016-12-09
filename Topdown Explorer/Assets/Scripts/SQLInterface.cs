@@ -35,7 +35,7 @@ public class SQLInterface : MonoBehaviour {
             PopulateStaticTables();
         }
 
-
+        //CreateNewPropInstances( 1, 2);
         }
     /// <summary>
     /// Built in unity function.
@@ -416,7 +416,7 @@ public class SQLInterface : MonoBehaviour {
         IDbCommand dbcmd = dbconn.CreateCommand();
         dbcmd.CommandText =
             "SELECT pr_typeID, pr_name, pr_size_x, pr_size_y, cpr_lLocX, cpr_lLocY, t_gcoord_x, t_gcoord_y " +
-            "FROM prop, contains_prop, map_tile " +
+            "FROM prop, contains_prop, map_tiles " +
             "WHERE " + tileindex + " = cpr_tileID " +
             "AND cpr_propID = pr_typeID; ";
         IDataReader reader = dbcmd.ExecuteReader();
@@ -432,7 +432,6 @@ public class SQLInterface : MonoBehaviour {
             global_coords = new IntVector(reader.GetInt32(reader.GetOrdinal("t_gcoord_x")), reader.GetInt32(reader.GetOrdinal("t_gcoord_y")));
             local_coords = new Vector2(reader.GetFloat(reader.GetOrdinal("cpr_lLocX")), reader.GetFloat(reader.GetOrdinal("cpr_lLocY")));
             size = new Vector2(reader.GetFloat(reader.GetOrdinal("pr_size_x")), reader.GetFloat(reader.GetOrdinal("pr_size_y")));
-            Debug.Log(reader.GetString(0));
             list.Add(new PropStats(type, name, global_coords, local_coords, size));
 
             
@@ -469,6 +468,26 @@ public class SQLInterface : MonoBehaviour {
 
         }
         return list;
+    }
+
+    public List<KeyValuePair<int, Vector2>> CreateNewPropInstances(int tileindex,int count)
+    {
+        List<KeyValuePair<int,Vector2 >> retlist = new List<KeyValuePair<int, Vector2>>();
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        string buildstatement = "BEGIN;";
+        for (int i = 0; i < count; i++)
+        {
+            int proptype = (int)UnityEngine.Random.Range(1, 9);
+            Vector2 locoords = new Vector2(UnityEngine.Random.Range(-40f, 40f), UnityEngine.Random.Range(-40f, 40f));
+            buildstatement += "INSERT INTO contains_prop values( " + tileindex + " , " +proptype +" , "+ locoords.x+" , " + locoords.y+ "); ";
+            retlist.Add(new KeyValuePair<int, Vector2>(proptype, locoords));
+        }
+        buildstatement += " COMMIT;";
+        dbcmd.CommandText = buildstatement;
+        dbcmd.ExecuteNonQuery();
+        dbcmd.Dispose();
+        return retlist;
     }
 
     /// <summary>

@@ -63,14 +63,14 @@ public class GameManager : MonoBehaviour {
         };
         PropClasses = new Dictionary<int, GameObject>
         {
-            { 1, Resources.Load("Prefabs/Barrel") as GameObject},
-            { 2, Resources.Load("Prefabs/Table") as GameObject},
-            { 3, Resources.Load("Prefabs/WallHoriz") as GameObject},
-            { 4, Resources.Load("Prefabs/WallVert") as GameObject},
-            { 5, Resources.Load("Prefabs/WallBendLBot") as GameObject},
-            { 6, Resources.Load("Prefabs/WallBendRTop") as GameObject},
-            { 7, Resources.Load("Prefabs/SpikedPole") as GameObject},
-            { 8, Resources.Load("Prefabs/Chandelier") as GameObject},
+            { 1, Resources.Load("Prefabs/Prop") as GameObject},
+            { 2, Resources.Load("Prefabs/Prop") as GameObject},
+            { 3, Resources.Load("Prefabs/Prop") as GameObject},
+            { 4, Resources.Load("Prefabs/Prop") as GameObject},
+            { 5, Resources.Load("Prefabs/Prop") as GameObject},
+            { 6, Resources.Load("Prefabs/Prop") as GameObject},
+            { 7, Resources.Load("Prefabs/Prop") as GameObject},
+            { 8, Resources.Load("Prefabs/Prop") as GameObject},
         };
     }
 	
@@ -99,6 +99,30 @@ public class GameManager : MonoBehaviour {
                     component.index = k.Key;
                     component.manager = this;
                     tiles.Add(newTile);
+                    if (!newgame)
+                    {
+                        List<PropStats> props = sql.getAssociatedProps(k.Key);
+                        foreach (PropStats p in props)
+                        {
+                            if (!(k.Value.x == 0 && k.Value.y == 0))
+                            {
+                                GameObject newprop = GameObject.Instantiate(PropClasses[1]);
+                                newprop.transform.position = new Vector3(k.Value.x * mapscale + p.LCoord.x, 0, k.Value.y * mapscale + p.LCoord.y);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        List<KeyValuePair<int, Vector2>> props = sql.CreateNewPropInstances(k.Key, 6);
+                        foreach (KeyValuePair<int, Vector2> p in props)
+                        {
+                            if (!(k.Value.x == 0 && k.Value.y == 0))
+                            {
+                                GameObject newprop = GameObject.Instantiate(PropClasses[p.Key]);
+                                newprop.transform.position = new Vector3(k.Value.x * mapscale + p.Value.x, 0, k.Value.y * mapscale + p.Value.y);
+                            }
+                        }
+                    }
                 }
 
                 Loadscreen.SetActive(false);
@@ -180,6 +204,15 @@ public class GameManager : MonoBehaviour {
             component.index = k.Key;
             component.manager = this;
             tiles.Add(newTile);
+            List<KeyValuePair<int, Vector2>> props = sql.CreateNewPropInstances(k.Key, 6);
+            foreach (KeyValuePair<int, Vector2> p in props)
+            {
+                if (!(k.Value.x == 0 && k.Value.y == 0))
+                {
+                    GameObject newprop = GameObject.Instantiate(PropClasses[p.Key]);
+                    newprop.transform.position = new Vector3(k.Value.x * mapscale + p.Value.x, 0, k.Value.y * mapscale + p.Value.y);
+                }
+            }
         }
         
         currentlyOccupied = newloc;
