@@ -4,6 +4,7 @@ using System.Collections;
 public class CeilingHoleAnimator : MonoBehaviour {
     public GameObject left;
     public GameObject right;
+    public Light thislight;
     private float i = 0;
 	// Use this for initialization
 	void Start () {
@@ -26,5 +27,7 @@ public class CeilingHoleAnimator : MonoBehaviour {
     {
         //Debug.Log(i);
         i++;
+        thislight.intensity = thislight.intensity * .997f;
+
     }
 }

@@ -66,6 +66,7 @@ public class MainMenuInterface : MonoBehaviour {
     public void shownewGameScreen(bool active)
     {
         newgameScreen.SetActive(active);
+        //sql.GenerateNewTiles(new IntVector(50,0), new IntVector(50, 1),1);
     }
 
 
@@ -87,6 +88,7 @@ public class MainMenuInterface : MonoBehaviour {
     /// <param name="saveFile"></param>
     public void LaunchNewGame()
     {
+        gameManager.Loadscreen.SetActive(true);
         PlayerEntry = newgameScreen.transform.FindChild("InputFieldPlayer").GetComponent<InputField>().text;
         if (PlayerEntry == "") PlayerEntry = QuoteGenerator.GenerateName();
         SaveEntry = newgameScreen.transform.FindChild("InputFieldSave").GetComponent<InputField>().text;

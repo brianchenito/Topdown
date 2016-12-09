@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class Tile : MonoBehaviour {
+    public GameManager manager;
     public IntVector GlobalCoords;
     public int index;
 	// Use this for initialization
@@ -13,4 +14,10 @@ public class Tile : MonoBehaviour {
 	void Update () {
 	
 	}
+    void OnTriggerEnter(Collider other)
+    {
+        //Debug.Log("<color=green> ENTERED TILE" + index+"</color>");
+        manager.checkNewTiles(GlobalCoords);
+    }
+
 }

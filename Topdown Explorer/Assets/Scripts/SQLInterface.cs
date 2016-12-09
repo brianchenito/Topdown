@@ -36,7 +36,7 @@ public class SQLInterface : MonoBehaviour {
         }
 
 
-    }
+        }
     /// <summary>
     /// Built in unity function.
     /// called upon game close.
@@ -207,7 +207,8 @@ public class SQLInterface : MonoBehaviour {
         IDbCommand dbcmd = dbconn.CreateCommand();
         Debug.Log("Populating Static db tables.");
         dbcmd.CommandText =
-            "insert into enemy values(1,'SlimeBig',4,5);"+
+            "BEGIN;" +
+            "insert into enemy values(1,'SlimeBig',4,5);" +
             "insert into enemy values(2,'SlimeMed',3,3);" +
             "insert into enemy values(3,'SlimeSmall',2,1);" +
             "insert into enemy values(4,'Skeltal',4,8); " +
@@ -232,7 +233,9 @@ public class SQLInterface : MonoBehaviour {
             "insert into pickup values(5,'Arrow',5,1); " +
             "insert into pickup values(6,'Shield',50,1); " +
             "insert into pickup values(7,'Bow',50,1); " +
-            "insert into pickup values(8,'FlameSword',50,1); ";
+            "insert into pickup values(8,'FlameSword',50,1); " +
+            "COMMIT;";
+
         dbcmd.ExecuteNonQuery();
         dbcmd.Dispose();
         Debug.Log("Populated static tables.");
@@ -518,8 +521,24 @@ public class SQLInterface : MonoBehaviour {
             "INSERT INTO save_files VALUES ( " + newSaveIndex + " , '" + Savename + "' , '" + seed + "' , '" + time + "' ); "+
             "INSERT INTO player_character VALUES( "+ newPlayerIndex+" , '" + Playername + "' , " + 0 + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 0 + " , " + 12 + " , " + 1 + " ); " +
             "INSERT INTO map_Tiles VALUES( "+ newMapIndex+", 0, 0, "+newSaveIndex+ ", 0, '" +time+ "' , 0 , 0  );"+
-            "INSERT INTO contains_tile VALUES( "+ newSaveIndex+ " , "+ newMapIndex+" );"+
-            "INSERT INTO contains_character VALUES( "+ newSaveIndex+" , "+ newPlayerIndex+ " );"
+            "INSERT INTO map_Tiles VALUES( " + (newMapIndex+1) + ", 1, 0, "   + newSaveIndex + ", 1, '" + "0000-01-01 00:00:00" + "' , 2 , 3  );" +
+            "INSERT INTO map_Tiles VALUES( " + (newMapIndex+2) + ", 0, 1, "   + newSaveIndex + ", 1, '" + "0000-01-01 00:00:00" + "' , 2 , 3  );" +
+            "INSERT INTO map_Tiles VALUES( " + (newMapIndex+3) + ", 1, 1, "   + newSaveIndex + ", 1, '" + "0000-01-01 00:00:00" + "' , 2 , 3  );" +
+            "INSERT INTO map_Tiles VALUES( " + (newMapIndex+4) + ", -1, 0, "  + newSaveIndex + ", 1, '" + "0000-01-01 00:00:00" + "' , 2 , 3  );" +
+            "INSERT INTO map_Tiles VALUES( " + (newMapIndex+5) + ", 0, -1, "  + newSaveIndex + ", 1, '" + "0000-01-01 00:00:00" + "' , 2 , 3  );" +
+            "INSERT INTO map_Tiles VALUES( " + (newMapIndex+6) + ", -1, -1, " + newSaveIndex + ", 1, '" + "0000-01-01 00:00:00" + "' , 2 , 3  );" +
+            "INSERT INTO map_Tiles VALUES( " + (newMapIndex+7) + ", 1, -1, "  + newSaveIndex + ", 1, '" + "0000-01-01 00:00:00" + "' , 2 , 3  );" +
+            "INSERT INTO map_Tiles VALUES( " + (newMapIndex+8) + ", -1, 1, "  + newSaveIndex + ", 1, '" + "0000-01-01 00:00:00" + "' , 2 , 3  );" +
+            "INSERT INTO contains_tile VALUES( " + newSaveIndex + " , " + newMapIndex + " );" +
+            "INSERT INTO contains_tile VALUES( " + newSaveIndex + " , " + (newMapIndex +1) + " );" +
+            "INSERT INTO contains_tile VALUES( " + newSaveIndex + " , " + (newMapIndex +2) + " );" +
+            "INSERT INTO contains_tile VALUES( " + newSaveIndex + " , " + (newMapIndex +3) + " );" +
+            "INSERT INTO contains_tile VALUES( " + newSaveIndex + " , " + (newMapIndex +4) + " );" +
+            "INSERT INTO contains_tile VALUES( " + newSaveIndex + " , " + (newMapIndex +5) + " );" +
+            "INSERT INTO contains_tile VALUES( " + newSaveIndex + " , " + (newMapIndex +6) + " );" +
+            "INSERT INTO contains_tile VALUES( " + newSaveIndex + " , " + (newMapIndex +7) + " );" +
+            "INSERT INTO contains_tile VALUES( " + newSaveIndex + " , " + (newMapIndex +8) + " );" +
+            "INSERT INTO contains_character VALUES( " + newSaveIndex+" , "+ newPlayerIndex+ " );"
 
             ;
         dbcmd.ExecuteNonQuery();
@@ -536,13 +555,94 @@ public class SQLInterface : MonoBehaviour {
     /// <param name="prevtile">The tile the character just left. ignore from search.</param>
     /// <param name="nextile">The tile the character is currently entering.</param>
     /// <returns> the indexes of all newly instanced tiles.</returns>
-    public List<int> GenerateNewTiles(int prevtile, int nexttile)
+    public List<KeyValuePair<int,IntVector>> GenerateNewTiles(IntVector prevtile, IntVector nexttile, int saveIndex)
     {
-           ///Not sure how to approach >  insert a new tile based on t_id of current tile? > so an insert into map_tiles Values( nexttile +
-           ///gcoord_x +index_x{this to calculate where the new tile will be as you add a value onto the current coord based on the direction taken(not sure how thats determined)} and same thing for y coord,
-           ///then pair this with the contains file and save files tables(by updating those 2?)
-           ///this one seems to be mostly sql side, except for the needed indexes
-        return null;
+
+        ///Not sure how to approach >  insert a new tile based on t_id of current tile? > so an insert into map_tiles Values( nexttile +
+        ///gcoord_x +index_x{this to calculate where the new tile will be as you add a value onto the current coord based on the direction taken(not sure how thats determined)} and same thing for y coord,
+        ///then pair this with the contains file and save files tables(by updating those 2?)
+        ///this one seems to be mostly sql side, except for the needed indexes
+        ///
+        List<KeyValuePair<int, IntVector>> newtiles= new List<KeyValuePair<int, IntVector>>();
+
+
+        // generate positions for new tiles
+        IntVector check1 = nexttile+nexttile - prevtile;
+        IntVector check2= check1;
+        IntVector check3= check1;
+        if (nexttile.x-prevtile.x != 0)
+        { // then the three to check are in a vert line
+
+            check2.y += 1;
+            check3.y -= 1;
+
+        }
+        else
+        {
+            check2.x += 1;
+            check3.x -= 1;
+        }
+        //Debug.Log("Checking for existence of tiles at " + check1.x + " , " + check1.y);
+        //Debug.Log("Checking for existence of tiles at " + check2.x + " , " + check2.y);
+        //Debug.Log("Checking for existence of tiles at " + check3.x + " , " + check3.y);
+
+        // get fresh map tile index
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        dbcmd.CommandText = "SELECT IFNULL( MAX(t_id), 0 ) as 'index' FROM map_tiles";
+        int newindex = Convert.ToInt32(dbcmd.ExecuteScalar())+1;
+        int numberofpickups = UnityEngine.Random.Range(0, 2);
+        int numberofenemies = UnityEngine.Random.Range(2, 6);
+        //int numberofpickups = 2;
+        //int numberofenemies = 2;
+        // start doing checks for exists 
+        dbcmd.CommandText = "select 1 from map_tiles where t_gcoord_x= " + check1.x + " and t_gcoord_y = " + check1.y +" and t_save_id = "+saveIndex+ ";";
+        var scalar1instance=dbcmd.ExecuteScalar();
+        string buildtext = "BEGIN;  ";
+        if (scalar1instance==null)
+        {
+            buildtext += "INSERT INTO map_Tiles VALUES( " + newindex + ", "+ check1.x+" , "+ check1.y +" , " + saveIndex + ", 1, '" 
+                            + "0000-01-01 00:00:00" + "' , "+ numberofpickups + " , "+ numberofenemies + " );" +
+                             "INSERT INTO contains_tile VALUES( " + saveIndex + " , " + newindex + " );";
+            newtiles.Add(new KeyValuePair<int, IntVector>(newindex, check1));
+            newindex++;
+
+            
+        }
+
+        dbcmd.CommandText = "select 1 from map_tiles where t_gcoord_x= " + check2.x + " and t_gcoord_y = " + check2.y + " and t_save_id = " + saveIndex + ";";
+
+        var scalar2instance = dbcmd.ExecuteScalar();
+
+        if (scalar2instance==null)
+        {
+            buildtext += "INSERT INTO map_Tiles VALUES( " + newindex + ", " + check2.x + " , " + check2.y + " , " + saveIndex + ", 1, '"
+                                        + "0000-01-01 00:00:00" + "' , " + numberofpickups + " , " + numberofenemies + " );" +
+                                         "INSERT INTO contains_tile VALUES( " + saveIndex + " , " + newindex + " ); ";
+            newtiles.Add(new KeyValuePair<int, IntVector>(newindex, check2));
+            newindex++;
+        }
+
+
+
+        dbcmd.CommandText = "select 1 from map_tiles where t_gcoord_x= " + check3.x + " and t_gcoord_y = " + check3.y + " and t_save_id = " + saveIndex + ";";
+        var scalar3instance = dbcmd.ExecuteScalar();
+
+        if (scalar3instance==null)
+        {
+
+            buildtext += "INSERT INTO map_Tiles VALUES( " + newindex + ", " + check3.x + " , " + check3.y + " , " + saveIndex + ", 1, '"
+                                        + "0000-01-01 00:00:00" + "' , " + numberofpickups + " , " + numberofenemies + " );" +
+                                         "INSERT INTO contains_tile VALUES( " + saveIndex + " , " + newindex + " ); ";
+            newtiles.Add(new KeyValuePair<int, IntVector>(newindex, check3));
+
+            newindex++;
+        }
+        dbcmd.CommandText = buildtext+" COMMIT; ";
+        dbcmd.ExecuteNonQuery();
+        dbcmd.Dispose();
+
+
+        return newtiles;
     }
     /// <summary>
     /// Generate up to the max number of contains_pickups possible for a specified tile. 
