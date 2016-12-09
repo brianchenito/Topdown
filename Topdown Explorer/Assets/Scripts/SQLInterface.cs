@@ -370,7 +370,7 @@ public class SQLInterface : MonoBehaviour {
 
         IDbCommand dbcmd = dbconn.CreateCommand();
         dbcmd.CommandText =
-            "SELECT e_typeID, e_name, e_exp, e_maxHealth, ce_lLocX, ce_lLocy, ce_instancehp, t_gcoord_x, t_gcoord_y " +
+            "SELECT e_typeID, e_name, e_exp, e_maxHealth, ce_lLocX, ce_lLocY, ce_instancehp, t_gcoord_x, t_gcoord_y " +
             "FROM enemy, contains_enemy, map_tile " +
             "WHERE " + tileIndex + " = ce_tileID " +
             "AND ce_enemyID = e_ID; ";
@@ -411,7 +411,7 @@ public class SQLInterface : MonoBehaviour {
 
         IDbCommand dbcmd = dbconn.CreateCommand();
         dbcmd.CommandText =
-            "SELECT pr_typeID, pr_name, pr_size_x, pr_size_y, cpr_lLocX, cpr_lLocy, t_gcoord_x, t_gcoord_y " +
+            "SELECT pr_typeID, pr_name, pr_size_x, pr_size_y, cpr_lLocX, cpr_lLocY, t_gcoord_x, t_gcoord_y " +
             "FROM prop, contains_prop, map_tile " +
             "WHERE " + tileindex + " = cpr_tileID " +
             "AND cpr_propID = pr_typeID; ";
@@ -432,11 +432,38 @@ public class SQLInterface : MonoBehaviour {
             list.Add(new PropStats(type, name, global_coords, local_coords, size));
 
             
-            }
+         }
         return list;
     }
     public List<PickupStats> getAssociatedPickups(int tileindex)
     {
+        List<PickupStats> list = new List<PickupStats>();
+
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        dbcmd.CommandText =
+            "SELECT p_typeID, p_name, p_exp, p_isActive, cp_lLocX, cp_lLocY, t_gcoord_x, t_gcoord_y " +
+            "FROM pickup, contains_pickup, map_tile " +
+            "WHERE " + tileindex + " = cp_tileID " +
+            "AND cp_pickupID = p_typeID; ";
+        IDataReader reader = dbcmd.ExecuteReader();
+        int type = 0;
+        string name = "wabuffet";
+        float exp = 0;
+        ///bool active = false;
+        IntVector global_coords = new IntVector();
+        Vector2 local_coords = Vector2.zero;
+        while (reader.Read())
+        {
+            type = reader.GetInt32(reader.GetOrdinal("p_typeID"));
+            name = reader.GetString(reader.GetOrdinal("p_name"));
+            global_coords = new IntVector(reader.GetInt32(reader.GetOrdinal("t_gcoord_x")), reader.GetInt32(reader.GetOrdinal("t_gcoord_y")));
+            local_coords = new Vector2(reader.GetFloat(reader.GetOrdinal("cp_lLocX")), reader.GetFloat(reader.GetOrdinal("cp_lLocY")));
+            exp = reader.GetFloat(reader.GetOrdinal("p_exp"));
+            Debug.Log(reader.GetString(0));
+            list.Add(new PickupStats(type, name, global_coords, local_coords, exp));
+
+
+        }
         return null;
     }
 
