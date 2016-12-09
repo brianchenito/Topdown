@@ -540,6 +540,10 @@ public class SQLInterface : MonoBehaviour {
     /// <returns> the indexes of all newly instanced tiles.</returns>
     public List<int> GenerateNewTiles(int prevtile, int nexttile)
     {
+           ///Not sure how to approach >  insert a new tile based on t_id of current tile? > so an insert into map_tiles Values( nexttile +
+           ///gcoord_x +index_x{this to calculate where the new tile will be as you add a value onto the current coord based on the direction taken(not sure how thats determined)} and same thing for y coord,
+           ///then pair this with the contains file and save files tables(by updating those 2?)
+           ///this one seems to be mostly sql side, except for the needed indexes
         return null;
     }
     /// <summary>
