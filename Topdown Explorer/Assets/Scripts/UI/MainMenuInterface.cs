@@ -94,7 +94,7 @@ public class MainMenuInterface : MonoBehaviour {
         int index = sql.CreateNewSave(SaveEntry, PlayerEntry);
 
         Debug.Log("instantiating save with Player, "+ PlayerEntry+" Save, "+ SaveEntry);
-        
+        gameManager.newgame = true;
         gameManager.LaunchGame(index);
 
     }

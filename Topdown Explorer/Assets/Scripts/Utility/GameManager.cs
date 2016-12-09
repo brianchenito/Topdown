@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
     //locals
     private bool isPaused;
     private AsyncOperation loadop;
+    public  bool newgame;
 
     //gameplay
     private int activeSaveIndex = 0;
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour {
     public static GameObject TileFab;
 	// Use this for initialization
 	void Start () {
-
+        newgame = false;
         isPaused = false;
         DontDestroyOnLoad(transform.gameObject);
 
@@ -77,8 +78,15 @@ public class GameManager : MonoBehaviour {
         {
             if (loadop.isDone)
             {
+                if (newgame)
+                {
+                    GameObject.Find("CeilingHole").GetComponent<CeilingHoleAnimator>().enabled=true;
+                    GameObject.Find("Camera").GetComponent<CameraShake>().enabled = true;
+                    GameObject.Find("CeilingHole").transform.GetChild(0).gameObject.SetActive(true);
+                }
+
                 // start instantiating tiles
-               List<KeyValuePair<int,IntVector>> tilesdata=sql.getAssociatedTiles(activeSaveIndex);
+                List<KeyValuePair<int,IntVector>> tilesdata=sql.getAssociatedTiles(activeSaveIndex);
                 foreach (KeyValuePair<int, IntVector> k in tilesdata)
                 {
                     Debug.Log("instantiating tile " + k.Key + " at " + k.Value.x + ", " + k.Value.y);
