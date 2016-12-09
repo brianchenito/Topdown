@@ -73,8 +73,10 @@ public class SQLInterface : MonoBehaviour {
         string conn = "URI=file:"+filepath; //Path to database.
         dbconn = new SqliteConnection(conn);
         dbconn.Open(); //Open connection to the database.
-
-
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        dbcmd.CommandText = "PRAGMA synchronous = OFF; PRAGMA journal_mode = MEMORY;";
+        dbcmd.ExecuteNonQuery();
+        dbcmd.Dispose();
     }
 
     /// <summary>
@@ -89,7 +91,7 @@ public class SQLInterface : MonoBehaviour {
         IDbCommand dbcmd = dbconn.CreateCommand();
         //gigantic schema constructor 
         Debug.Log("Constructing empty db.");
-        dbcmd.CommandText=
+        dbcmd.CommandText= "PRAGMA synchronous = OFF; PRAGMA journal_mode = MEMORY;"+
             "BEGIN;" +
         "CREATE TABLE contains_character ( " +
         "cc_saveID INTEGER NOT NULL "+
