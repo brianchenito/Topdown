@@ -555,6 +555,7 @@ public class SQLInterface : MonoBehaviour {
     /// <returns> the indexes of all newly instanced contains_pickups. </returns>
     public List<int> DropPickupRewards(int currenttile, int playerCharacter)
     {
+        ///theres no max to consider as it isnt in the db?
         return null;
     }
     /// <summary>
@@ -565,6 +566,11 @@ public class SQLInterface : MonoBehaviour {
     /// <param name="currenttile"></param>
     public void SummonEnemies(int currenttile)
     {
+        ///mostly sql
+        ///no idea how to populate a tile with enemies
+        ///I understand the constraints, but how to you populate a table which has different columns from another table with the count of 
+        ///enemies(essentially) as well as having to determine which enemy to spawn as well
+        ///mainly becuase theres nothing that tracks the current number of enemies within said tile
         return;
     }
     /// <summary>
