@@ -89,8 +89,9 @@ public class SQLInterface : MonoBehaviour {
         IDbCommand dbcmd = dbconn.CreateCommand();
         //gigantic schema constructor 
         Debug.Log("Constructing empty db.");
-        dbcmd.CommandText= 
-        "CREATE TABLE contains_character ( "+
+        dbcmd.CommandText=
+            "BEGIN;" +
+        "CREATE TABLE contains_character ( " +
         "cc_saveID INTEGER NOT NULL "+
         "REFERENCES save_files (sf_id), "+
         "cc_characterID DECIMAL(15) NOT NULL "+
@@ -193,7 +194,9 @@ public class SQLInterface : MonoBehaviour {
         "PRIMARY KEY,"+
         "hs_name CHAR(25) NOT NULL, "+
         "hs_exp  DECIMAL(10) NOT NULL "+
-        ");";
+        ");"+
+        "COMMIT;";
+
         dbcmd.ExecuteNonQuery();
         Debug.Log("Empty database constructed.");
         dbcmd.Dispose();
@@ -539,7 +542,6 @@ public class SQLInterface : MonoBehaviour {
             "INSERT INTO contains_tile VALUES( " + newSaveIndex + " , " + (newMapIndex +7) + " );" +
             "INSERT INTO contains_tile VALUES( " + newSaveIndex + " , " + (newMapIndex +8) + " );" +
             "INSERT INTO contains_character VALUES( " + newSaveIndex+" , "+ newPlayerIndex+ " );"
-
             ;
         dbcmd.ExecuteNonQuery();
         Debug.Log("Checkpoint");
@@ -622,8 +624,6 @@ public class SQLInterface : MonoBehaviour {
             newindex++;
         }
 
-
-
         dbcmd.CommandText = "select 1 from map_tiles where t_gcoord_x= " + check3.x + " and t_gcoord_y = " + check3.y + " and t_save_id = " + saveIndex + ";";
         var scalar3instance = dbcmd.ExecuteScalar();
 
@@ -640,7 +640,6 @@ public class SQLInterface : MonoBehaviour {
         dbcmd.CommandText = buildtext+" COMMIT; ";
         dbcmd.ExecuteNonQuery();
         dbcmd.Dispose();
-
 
         return newtiles;
     }

@@ -37,8 +37,9 @@ public class GameManager : MonoBehaviour {
         isPaused = false;
         currentlyOccupied = new IntVector(0, 0);
         DontDestroyOnLoad(transform.gameObject);
+        TileFab = Resources.Load("Prefabs/Tile") as GameObject;
 
-        EnemyClasses =new Dictionary<int, GameObject>()
+        EnemyClasses = new Dictionary<int, GameObject>()
         {
             {1,Resources.Load("Prefabs/SlimeBig") as GameObject },
             {2,Resources.Load("Prefabs/SlimeMed") as GameObject },
@@ -78,7 +79,6 @@ public class GameManager : MonoBehaviour {
         {
             if (loadop.isDone)
             {
-                TileFab = GameObject.Find("Tile");
                 if (newgame)
                 {
                     GameObject.Find("CeilingHole").GetComponent<CeilingHoleAnimator>().enabled=true;
