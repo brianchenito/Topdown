@@ -464,7 +464,7 @@ public class SQLInterface : MonoBehaviour {
 
 
         }
-        return null;
+        return list;
     }
 
     /// <summary>
