@@ -1,9 +1,43 @@
 fileFormatVersion: 2
 guid: ef824c69cec37ca46a26755d9db563f8
-timeCreated: 1479695081
+timeCreated: 1481258280
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: T_Fire-Sprite_0
+    21300002: T_Fire-Sprite_1
+    21300004: T_Fire-Sprite_2
+    21300006: T_Fire-Sprite_3
+    21300008: T_Fire-Sprite_4
+    21300010: T_Fire-Sprite_5
+    21300012: T_Fire-Sprite_6
+    21300014: T_Fire-Sprite_7
+    21300016: T_Fire-Sprite_8
+    21300018: T_Fire-Sprite_9
+    21300020: T_Fire-Sprite_10
+    21300022: T_Fire-Sprite_11
+    21300024: T_Fire-Sprite_12
+    21300026: T_Fire-Sprite_13
+    21300028: T_Fire-Sprite_14
+    21300030: T_Fire-Sprite_15
+    21300032: T_Fire-Sprite_16
+    21300034: T_Fire-Sprite_17
+    21300036: T_Fire-Sprite_18
+    21300038: T_Fire-Sprite_19
+    21300040: T_Fire-Sprite_20
+    21300042: T_Fire-Sprite_21
+    21300044: T_Fire-Sprite_22
+    21300046: T_Fire-Sprite_23
+    21300048: T_Fire-Sprite_24
+    21300050: T_Fire-Sprite_25
+    21300052: T_Fire-Sprite_26
+    21300054: T_Fire-Sprite_27
+    21300056: T_Fire-Sprite_28
+    21300058: T_Fire-Sprite_29
+    21300060: T_Fire-Sprite_30
+    21300062: T_Fire-Sprite_31
+    21300064: T_Fire-Sprite_32
+    21300066: T_Fire-Sprite_33
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -51,7 +85,449 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: T_Fire-Sprite_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2075
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_1
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 2075
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_2
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 2075
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_3
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 2075
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_4
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 2075
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_5
+      rect:
+        serializedVersion: 2
+        x: 1440
+        y: 2075
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1660
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_7
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 1660
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_8
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 1660
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_9
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 1660
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_10
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 1660
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_11
+      rect:
+        serializedVersion: 2
+        x: 1440
+        y: 1660
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1245
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_13
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 1245
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_14
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 1245
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_15
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 1245
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_16
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 1245
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_17
+      rect:
+        serializedVersion: 2
+        x: 1440
+        y: 1245
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 830
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_19
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 830
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_20
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 830
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_21
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 830
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_22
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 830
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_23
+      rect:
+        serializedVersion: 2
+        x: 1440
+        y: 830
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 415
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_25
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 415
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_26
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 415
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_27
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 415
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_28
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 415
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_29
+      rect:
+        serializedVersion: 2
+        x: 1440
+        y: 415
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_31
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 0
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_32
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 0
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: T_Fire-Sprite_33
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 0
+        width: 288
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
     outline: []
   spritePackingTag: 
   userData: 
