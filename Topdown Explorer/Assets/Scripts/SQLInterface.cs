@@ -376,10 +376,10 @@ public class SQLInterface : MonoBehaviour {
 
         IDbCommand dbcmd = dbconn.CreateCommand();
         dbcmd.CommandText =
-            "SELECT e_typeID, e_name, e_exp, e_maxHealth, ce_lLocX, ce_lLocY, ce_instancehp, t_gcoord_x, t_gcoord_y " +
-            "FROM enemy, contains_enemy, map_tile " +
+            "SELECT e_typeID, e_name, e_exp, e_maxHealth, ce_lLocX, ce_lLocY, ce_instancedhp, t_gcoord_x, t_gcoord_y " +
+            "FROM enemy, contains_enemy, map_tiles " +
             "WHERE " + tileIndex + " = ce_tileID " +
-            "AND ce_enemyID = e_ID; ";
+            "AND ce_enemyID = e_typeID; ";
         IDataReader reader = dbcmd.ExecuteReader();
         int type = 0;
         string name = "wabuffet";
@@ -394,10 +394,9 @@ public class SQLInterface : MonoBehaviour {
             name = reader.GetString(reader.GetOrdinal("e_name"));
             exp = reader.GetFloat(reader.GetOrdinal("e_exp"));
             maxhp = reader.GetFloat(reader.GetOrdinal("e_maxHealth"));
-            currenthp = reader.GetFloat(reader.GetOrdinal("ce_instancehp"));
+            currenthp = reader.GetFloat(reader.GetOrdinal("ce_instancedhp"));
             global_coords = new IntVector(reader.GetInt32(reader.GetOrdinal("t_gcoord_x")),reader.GetInt32(reader.GetOrdinal("t_gcoord_y")));
             local_coords = new Vector2(reader.GetFloat(reader.GetOrdinal("ce_lLocX")), reader.GetFloat(reader.GetOrdinal("ce_lLocY")));
-            Debug.Log(reader.GetString(0));
             list.Add(new EnemyStats(type, name, global_coords, local_coords, exp, maxhp, currenthp));
 
         }
@@ -447,7 +446,7 @@ public class SQLInterface : MonoBehaviour {
         IDbCommand dbcmd = dbconn.CreateCommand();
         dbcmd.CommandText =
             "SELECT p_typeID, p_name, p_exp, p_isActive, cp_lLocX, cp_lLocY, t_gcoord_x, t_gcoord_y " +
-            "FROM pickup, contains_pickup, map_tile " +
+            "FROM pickup, contains_pickup, map_tiles " +
             "WHERE " + tileindex + " = cp_tileID " +
             "AND cp_pickupID = p_typeID; ";
         IDataReader reader = dbcmd.ExecuteReader();
@@ -464,11 +463,11 @@ public class SQLInterface : MonoBehaviour {
             global_coords = new IntVector(reader.GetInt32(reader.GetOrdinal("t_gcoord_x")), reader.GetInt32(reader.GetOrdinal("t_gcoord_y")));
             local_coords = new Vector2(reader.GetFloat(reader.GetOrdinal("cp_lLocX")), reader.GetFloat(reader.GetOrdinal("cp_lLocY")));
             exp = reader.GetFloat(reader.GetOrdinal("p_exp"));
-            Debug.Log(reader.GetString(0));
             list.Add(new PickupStats(type, name, global_coords, local_coords, exp));
 
 
         }
+        Debug.Log("qqqqqqq" + list.Count);
         return list;
     }
 
@@ -484,6 +483,48 @@ public class SQLInterface : MonoBehaviour {
             Vector2 locoords = new Vector2(UnityEngine.Random.Range(-40f, 40f), UnityEngine.Random.Range(-40f, 40f));
             buildstatement += "INSERT INTO contains_prop values( " + tileindex + " , " +proptype +" , "+ locoords.x+" , " + locoords.y+ "); ";
             retlist.Add(new KeyValuePair<int, Vector2>(proptype, locoords));
+        }
+        buildstatement += " COMMIT;";
+        dbcmd.CommandText = buildstatement;
+        dbcmd.ExecuteNonQuery();
+        dbcmd.Dispose();
+        return retlist;
+    }
+
+
+
+
+    public List<KeyValuePair<int, Vector2>> CreateNewPickupInstances(int tileindex, int count)
+    {
+        List<KeyValuePair<int, Vector2>> retlist = new List<KeyValuePair<int, Vector2>>();
+        IDbCommand dbcmd = dbconn.CreateCommand();
+
+        string buildstatement = "BEGIN;";
+        for (int i = 0; i < count; i++)
+        {
+            int pickuptype = (int)UnityEngine.Random.Range(1, 9);
+            Vector2 locoords = new Vector2(UnityEngine.Random.Range(-40f, 40f), UnityEngine.Random.Range(-40f, 40f));
+            buildstatement += "INSERT INTO contains_pickup values( " + tileindex + " , " + pickuptype + " , " + locoords.x + " , " + locoords.y + "); ";
+            retlist.Add(new KeyValuePair<int, Vector2>(pickuptype, locoords));
+        }
+        buildstatement += " COMMIT;";
+        dbcmd.CommandText = buildstatement;
+        dbcmd.ExecuteNonQuery();
+        dbcmd.Dispose();
+        return retlist;
+    }
+
+    public List<KeyValuePair<int, Vector2>> CreateNewEnemyInstances(int tileindex, int count)
+    {
+        List<KeyValuePair<int, Vector2>> retlist = new List<KeyValuePair<int, Vector2>>();
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        string buildstatement = "BEGIN;";
+        for (int i = 0; i < count; i++)
+        {
+            int enemytype = (int)UnityEngine.Random.Range(1, 9);
+            Vector2 locoords = new Vector2(UnityEngine.Random.Range(-40f, 40f), UnityEngine.Random.Range(-40f, 40f));
+            buildstatement += "INSERT INTO contains_enemy values( " + tileindex + " , " + enemytype + " , " + locoords.x + " , " + locoords.y + " , 1 ); ";
+            retlist.Add(new KeyValuePair<int, Vector2>(enemytype, locoords));
         }
         buildstatement += " COMMIT;";
         dbcmd.CommandText = buildstatement;
@@ -588,7 +629,6 @@ public class SQLInterface : MonoBehaviour {
         ///
         List<KeyValuePair<int, IntVector>> newtiles= new List<KeyValuePair<int, IntVector>>();
 
-
         // generate positions for new tiles
         IntVector check1 = nexttile+nexttile - prevtile;
         IntVector check2= check1;
@@ -605,9 +645,9 @@ public class SQLInterface : MonoBehaviour {
             check2.x += 1;
             check3.x -= 1;
         }
-        //Debug.Log("Checking for existence of tiles at " + check1.x + " , " + check1.y);
-        //Debug.Log("Checking for existence of tiles at " + check2.x + " , " + check2.y);
-        //Debug.Log("Checking for existence of tiles at " + check3.x + " , " + check3.y);
+        Debug.Log("Checking for existence of tiles at " + check1.x + " , " + check1.y);
+        Debug.Log("Checking for existence of tiles at " + check2.x + " , " + check2.y);
+        Debug.Log("Checking for existence of tiles at " + check3.x + " , " + check3.y);
 
         // get fresh map tile index
         IDbCommand dbcmd = dbconn.CreateCommand();

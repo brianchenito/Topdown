@@ -41,25 +41,25 @@ public class GameManager : MonoBehaviour {
 
         EnemyClasses = new Dictionary<int, GameObject>()
         {
-            {1,Resources.Load("Prefabs/SlimeBig") as GameObject },
-            {2,Resources.Load("Prefabs/SlimeMed") as GameObject },
-            {3,Resources.Load("Prefabs/SlimeSmall") as GameObject },
-            {4,Resources.Load("Prefabs/Skeltal") as GameObject },
-            {5,Resources.Load("Prefabs/SkeltalArcher") as GameObject },
-            {6,Resources.Load("Prefabs/SkeltalShield") as GameObject },
-            {7,Resources.Load("Prefabs/WizardGuy") as GameObject },
-            {8,Resources.Load("Prefabs/Bat") as GameObject },
+            {1,Resources.Load("Prefabs/Enemy") as GameObject },
+            {2,Resources.Load("Prefabs/Enemy") as GameObject },
+            {3,Resources.Load("Prefabs/Enemy") as GameObject },
+            {4,Resources.Load("Prefabs/Enemy") as GameObject },
+            {5,Resources.Load("Prefabs/Enemy") as GameObject },
+            {6,Resources.Load("Prefabs/Enemy") as GameObject },
+            {7,Resources.Load("Prefabs/Enemy") as GameObject },
+            {8,Resources.Load("Prefabs/Enemy") as GameObject },
         };
         PickupClasses = new Dictionary<int, GameObject>
         {
-            { 1, Resources.Load("Prefabs/HealthSmall") as GameObject},
-            { 2, Resources.Load("Prefabs/HealthBig") as GameObject},
-            { 3, Resources.Load("Prefabs/TreasureChest") as GameObject},
-            { 4, Resources.Load("Prefabs/Coin") as GameObject},
-            { 5, Resources.Load("Prefabs/Arrow") as GameObject},
-            { 6, Resources.Load("Prefabs/Shield") as GameObject},
-            { 7, Resources.Load("Prefabs/Bow") as GameObject},
-            { 8, Resources.Load("Prefabs/FlameSword") as GameObject},  
+            { 1, Resources.Load("Prefabs/BowPickup") as GameObject},
+            { 2, Resources.Load("Prefabs/BowPickup") as GameObject},
+            { 3, Resources.Load("Prefabs/BowPickup") as GameObject},
+            { 4, Resources.Load("Prefabs/BowPickup") as GameObject},
+            { 5, Resources.Load("Prefabs/BowPickup") as GameObject},
+            { 6, Resources.Load("Prefabs/BowPickup") as GameObject},
+            { 7, Resources.Load("Prefabs/BowPickup") as GameObject},
+            { 8, Resources.Load("Prefabs/BowPickup") as GameObject},  
         };
         PropClasses = new Dictionary<int, GameObject>
         {
@@ -108,8 +108,32 @@ public class GameManager : MonoBehaviour {
                             {
                                 GameObject newprop = GameObject.Instantiate(PropClasses[1]);
                                 newprop.transform.position = new Vector3(k.Value.x * mapscale + p.LCoord.x, 0, k.Value.y * mapscale + p.LCoord.y);
+                                newprop.GetComponent<Renderer>().material.color = Color.red;
                             }
                         }
+                        List<EnemyStats> enemies = sql.getAssociatedEnemies(k.Key);
+                        foreach (EnemyStats e in enemies)
+                        {
+                            if (!(k.Value.x == 0 && k.Value.y == 0))
+                            {
+                                GameObject nemenemy = GameObject.Instantiate(EnemyClasses[1]);
+                                nemenemy.transform.position = new Vector3(k.Value.x * mapscale + e.LCoord.x, 0, k.Value.y * mapscale + e.LCoord.y);
+                                nemenemy.GetComponent<Renderer>().material.color = Color.blue;
+                            }
+                        }
+                        
+                        List<PickupStats> pickups = sql.getAssociatedPickups(k.Key);
+                        Debug.Log("UUUUUUU" +pickups.Count);
+                        /*
+                        foreach (PickupStats pe in pickups)
+                        {
+                            if (!(k.Value.x == 0 && k.Value.y == 0))
+                            {
+                                GameObject pickup = GameObject.Instantiate(PickupClasses[1]);
+                                pickup.transform.position = new Vector3(k.Value.x * mapscale + pe.LCoord.x, 0, k.Value.y * mapscale + pe.LCoord.y);
+                            }
+                        }*/
+
                     }
                     else
                     {
@@ -117,9 +141,28 @@ public class GameManager : MonoBehaviour {
                         foreach (KeyValuePair<int, Vector2> p in props)
                         {
                             if (!(k.Value.x == 0 && k.Value.y == 0))
-                            {
+                            { 
                                 GameObject newprop = GameObject.Instantiate(PropClasses[p.Key]);
                                 newprop.transform.position = new Vector3(k.Value.x * mapscale + p.Value.x, 0, k.Value.y * mapscale + p.Value.y);
+                            }
+                        }
+                        List<KeyValuePair<int, Vector2>> enemies = sql.CreateNewEnemyInstances(k.Key, 2);
+                        foreach (KeyValuePair<int, Vector2> e in enemies)
+                        {
+                            if (!(k.Value.x == 0 && k.Value.y == 0))
+                            {
+                                GameObject nememy = GameObject.Instantiate(EnemyClasses[e.Key]);
+                                nememy.transform.position = new Vector3(k.Value.x * mapscale + e.Value.x, 0, k.Value.y * mapscale + e.Value.y);
+                            }
+                        }
+
+                        List<KeyValuePair<int, Vector2>> pickups = sql.CreateNewPickupInstances(k.Key, 3);
+                        foreach (KeyValuePair<int, Vector2> pe in pickups)
+                        {
+                            if (!(k.Value.x == 0 && k.Value.y == 0))
+                            {
+                                GameObject pickup = GameObject.Instantiate(PickupClasses[pe.Key]);
+                                pickup.transform.position = new Vector3(k.Value.x * mapscale + pe.Value.x, 0, k.Value.y * mapscale + pe.Value.y);
                             }
                         }
                     }
@@ -213,6 +256,29 @@ public class GameManager : MonoBehaviour {
                     newprop.transform.position = new Vector3(k.Value.x * mapscale + p.Value.x, 0, k.Value.y * mapscale + p.Value.y);
                 }
             }
+
+            List<KeyValuePair<int, Vector2>> enemies = sql.CreateNewEnemyInstances(k.Key, 2);
+            foreach (KeyValuePair<int, Vector2> e in enemies)
+            {
+                if (!(k.Value.x == 0 && k.Value.y == 0))
+                {
+                    GameObject newenemy = GameObject.Instantiate(EnemyClasses[e.Key]);
+                    newenemy.transform.position = new Vector3(k.Value.x * mapscale + e.Value.x, 0, k.Value.y * mapscale + e.Value.y);
+                }
+            }
+
+
+
+            List<KeyValuePair<int, Vector2>> pickups = sql.CreateNewPickupInstances(k.Key, 3);
+            foreach (KeyValuePair<int, Vector2> pe in pickups)
+            {
+                if (!(k.Value.x == 0 && k.Value.y == 0))
+                {
+                    GameObject pikcup = GameObject.Instantiate(PickupClasses[pe.Key]);
+                    pikcup.transform.position = new Vector3(k.Value.x * mapscale + pe.Value.x, 0, k.Value.y * mapscale + pe.Value.y);
+                }
+            }
+
         }
         
         currentlyOccupied = newloc;
